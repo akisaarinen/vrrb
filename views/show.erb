@@ -37,7 +37,15 @@
   </style>
 </head>
 <body>
-  <h1>Junat Kilon asemalta Helsinkiin (<%= @trains.size %> kpl)</h1>
+  <h1>
+    Junat asemalta <%= $local_station %>
+    <% if $select_by_target %>
+      kohteeseen <%= $target_station %>
+    <% else %>
+      jotka l&auml;htev&auml;t asemalta <%= $source_station %>
+    <% end %>
+    (<%= @trains.size %> kpl)
+  </h1>
   <% @trains.each do |name, url, update_info, target, last_station, kilo|
         info_available = last_station['dep_actual'] != ""
   %>
@@ -73,6 +81,7 @@
               <%= last_station['dep_actual'] %>
             </span>
           </p>
+          <p>M&auml;&auml;r&auml;np&auml;&auml;: <%= target %></p>
           <p class="update-info">P&auml;ivitetty <%= update_info %></p>
       <% end %>
   <% end %> 

@@ -1,0 +1,5 @@
+select_by_target: yes
+target_station: Helsinki
+source_station: Helsinki
+local_station: Kilo
+reference_station_code: EPO

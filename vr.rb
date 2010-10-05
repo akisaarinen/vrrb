@@ -3,6 +3,7 @@ require 'sinatra'
 require 'uri'
 require 'net/http'
 require 'nokogiri'
+require 'yaml'
 
 $base_url = "http://service.vr.fi"
 
@@ -68,23 +69,28 @@ def fetch_all_trains(station_code)
   }
 end
 
+$config = YAML.load_file("vr.yml")
+$select_by_target = ($config["select_by_target"] == true)
+$reference_station_code = $config["reference_station_code"]
+$local_station = $config["local_station"]
+$target_station = $config["target_station"]
+$source_station = $config["source_station"]
 
 def train_selector(source, target)
-  puts "source: #{source}, target: #{target}"
-  source == "Helsinki"
+  if $select_by_target
+    target == $target_station
+  else
+    source == $source_station
+  end
 end
 
-
 get '/' do
-  reference_station_code = "EPO"
-  local_station = "Kilo"
-
-  trains = fetch_all_trains(reference_station_code)
+  trains = fetch_all_trains($reference_station_code)
   selected_trains = trains.select { |n, url, u, t, s| train_selector(s.first["name"], t) }
 
   @trains = selected_trains.map { |name, url, update_info, target, stations|
     last_station = stations.reverse.find { |s| s['dep_actual'] != nil && s["dep_actual"] != "" } || stations.first
-    kilo = stations.find { |s| s['name'] == local_station }
+    kilo = stations.find { |s| s['name'] == $local_station }
     [name, url, update_info, target, last_station, kilo]
   }
   erb :show
