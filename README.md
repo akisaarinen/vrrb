@@ -27,3 +27,7 @@ Screenshot of my home station:
 
 ![screenshot!](http://github.com/akisaarinen/vrrb/raw/master/screenshot.png)
 
+Licensing
+---------
+
+See LICENSE.
