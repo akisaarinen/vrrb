@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Junat Helsinkiin Kilosta</title>
+  <style type="text/css">
+    body {
+      font-family: Helvetica, Arial;
+      font-size: 12px;
+    }
+    p {
+      margin-left: 10px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+    .late-info {
+      color: #f00;
+      font-weight: bold;
+    }
+    .no-info {
+      color: #888;
+      font-weight: normal;
+    }
+    .update-info {
+      color: #888;
+    }
+    .departure-time, .last-location {
+      font-weight: bold;
+    }
+    div {
+      margin-top: 10px;
+    }
+    a {
+      font-weight: normal;
+      font-size: 10px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>Junat Kilon asemalta Helsinkiin (<%= @trains.size %> kpl)</h1>
+  <% @trains.each do |name, url, update_info, target, last_station, kilo|
+        info_available = last_station['dep_actual'] != ""
+  %>
+    <h2>&raquo; <%= name %>-juna klo <%= kilo['dep_sched'] %>
+      -
+      <% if info_available %>
+          <span class="late-info">
+            <%=
+              if last_station['dep_actual'] == ""
+                  "ei vielŠ liikennetietoja"
+              elsif last_station['dep_actual'] != last_station['dep_sched']
+                s_time = Time.parse(last_station['dep_sched'])
+                a_time = Time.parse(last_station['dep_actual'])
+                "#{((a_time - s_time).to_i / 60.0)} min my&ouml;h&auml;ss&auml;"
+              else
+                "aikataulussa"
+              end
+            %>
+          </span>
+      <% else %>
+          <span class="no-info">
+            ei viel&auml; tietoja
+          </span>
+      <% end %>
+      <a href="<%= url %>">(@vr.fi)</a>
+    </h2>
+      <% if info_available %>
+          <p>
+            Viimeisin tunnettu sijainti:
+            <span class="last-location"><%= last_station['name'] %></span>
+            kello
+            <span class="departure-time">
+              <%= last_station['dep_actual'] %>
+            </span>
+          </p>
+          <p class="update-info">P&auml;ivitetty <%= update_info %></p>
+      <% end %>
+  <% end %> 
+  <div class="service-info">
+    <a href="http://service.vr.fi/juku/haku.action?lang=fi&junalaji=ll">Suorat haut VR:lt&auml</a>
+  </div>
+</body>
+</html>
