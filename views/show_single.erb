@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title>Junat asemalta <%= $local_station %></title>
+  <title>Junat asemalta <%= @local_station %></title>
   <style type="text/css">
     body {
       font-family: Helvetica, Arial;
@@ -38,11 +38,11 @@
 </head>
 <body>
   <h1>
-    Junat asemalta <%= $local_station %>
-    <% if $select_by_target %>
-      kohteeseen <%= $target_station %>
+    Junat asemalta <%= @local_station %>
+    <% if @select_by_target %>
+      kohteeseen <%= @target_station %>
     <% else %>
-      jotka l&auml;htev&auml;t asemalta <%= $source_station %>
+      jotka l&auml;htev&auml;t asemalta <%= @source_station %>
     <% end %>
     (<%= @trains.size %> kpl)
   </h1>
@@ -85,6 +85,9 @@
           <p class="update-info">P&auml;ivitetty <%= update_info %></p>
       <% end %>
   <% end %> 
+  <div>
+    <a href="/">Takaisin listaukseen</a>
+  </div>
   <div class="service-info">
     <a href="http://service.vr.fi/juku/haku.action?lang=fi&junalaji=ll">Suorat haut VR:lt&auml</a>
   </div>

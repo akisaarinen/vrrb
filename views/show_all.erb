@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Juna-aikataulut</title>
+  <style type="text/css">
+    body {
+      font-family: Helvetica, Arial;
+      font-size: 12px;
+    }
+    p {
+      margin-left: 10px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+    .late-info {
+      color: #f00;
+      font-weight: bold;
+    }
+    .no-info {
+      color: #888;
+      font-weight: normal;
+    }
+    .update-info {
+      color: #888;
+    }
+    .departure-time, .last-location {
+      font-weight: bold;
+    }
+    div {
+      margin-top: 10px;
+    }
+    a {
+      font-weight: normal;
+      font-size: 10px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    Juna-aikataulut
+  </h1>
+  <ul>
+    <% @routes.each do |name| %>
+    <li><a href="trains/<%=name%>"><%=name%></a></li>
+    <% end %>
+  </ul>
+  <div class="service-info">
+    <a href="http://service.vr.fi/juku/haku.action?lang=fi&junalaji=ll">Suorat haut VR:lt&auml</a>
+  </div>
+</body>
+</html>

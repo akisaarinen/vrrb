@@ -70,30 +70,38 @@ def fetch_all_trains(station_code)
 end
 
 $config = YAML.load_file("vr.yml")
-$select_by_target = ($config["select_by_target"] == true)
-$reference_station_code = $config["reference_station_code"]
-$local_station = $config["local_station"]
-$target_station = $config["target_station"]
-$source_station = $config["source_station"]
-
-def train_selector(source, target)
-  if $select_by_target
-    target == $target_station
-  else
-    source == $source_station
-  end
-end
 
 get '/' do
-  trains = fetch_all_trains($reference_station_code)
-  selected_trains = trains.select { |n, url, u, t, s| train_selector(s.first["name"], t) }
+  @routes = $config.keys
+  erb :show_all 
+end
+
+get '/trains/:route' do
+  route_config = $config[params[:route]]
+  
+  @select_by_target = (route_config["select_by_target"] == true)
+  @reference_station_code = route_config["reference_station_code"]
+  @local_station = route_config["local_station"]
+  @target_station = route_config["target_station"]
+  @source_station = route_config["source_station"]
+
+  def train_selector(select_by_target, target_station, source_station, source, target)
+    if select_by_target
+      target == target_station
+    else
+      source == source_station
+    end
+  end
+
+  trains = fetch_all_trains(@reference_station_code)
+  selected_trains = trains.select { |n, url, u, t, s| train_selector(@select_by_target, @target_station, @source_station, s.first["name"], t) }
 
   @trains = selected_trains.map { |name, url, update_info, target, stations|
     last_station = stations.reverse.find { |s| s['dep_actual'] != nil && s["dep_actual"] != "" } || stations.first
-    kilo = stations.find { |s| s['name'] == $local_station }
+    kilo = stations.find { |s| s['name'] == @local_station }
     [name, url, update_info, target, last_station, kilo]
   }
-  erb :show
+  erb :show_single
 end
 
 # reqs:
