@@ -6,6 +6,8 @@ require 'nokogiri'
 require 'html_loader.rb'
 
 class VrParser
+  attr_accessor :html_loader
+
   def initialize
     @base_url = "http://service.vr.fi"
     @html_loader = VrHtmlLoader.new
