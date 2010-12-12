@@ -26,6 +26,10 @@ get '/api/train/:id.json' do
   vr_parser.fetch_single_train(params[:id]).to_json
 end
 
+get '/view' do
+  erb :ajaxview
+end
+
 get '/trains/:route' do
   route_config = $config[params[:route]]
   
@@ -60,6 +64,11 @@ get '/trains/:route' do
     [name, url, update_info, target, last_station, kilo]
   }
   erb :show_single
+end
+
+get '/ajax-loader.gif' do
+  headers 'Content-type' => 'image/gif'
+  File.read('ajax-loader.gif')
 end
 
 # reqs:
