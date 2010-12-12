@@ -13,7 +13,7 @@ class VrParser
 
 
   def fetch_train_list(station)
-    r = @html_loader.get_train_list(station)
+    r = @html_loader.get_main_page(station)
     if m = /action="([^"]+)"/.match(r)
       post_reply = @html_loader.post_train_list(station, m[1])
       doc = Nokogiri::HTML(post_reply)

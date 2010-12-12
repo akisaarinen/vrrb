@@ -8,7 +8,7 @@ class VrHtmlLoader
     @train_list_url = "/juku/haku.action?lang=fi&junalaji=ll"
   end
 
-  def get_train_list(station)
+  def get_main_page(station)
     uri = URI.parse(@base_url + @train_list_url)
     Net::HTTP.get uri
   end
