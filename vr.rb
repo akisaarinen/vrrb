@@ -33,9 +33,17 @@ get '/trains/:route' do
   end
 
   trains = vr_parser.fetch_all_trains(@reference_station_code)
-  selected_trains = trains.select { |n, url, u, t, s| train_selector(@select_by_target, @target_station, @source_station, s.first["name"], t) }
+  selected_trains = trains.select { |t|
+    train_selector(@select_by_target, @target_station, @source_station, t["stations"].first["name"], t["target"])
+  }
 
-  @trains = selected_trains.map { |name, url, update_info, target, stations|
+  @trains = selected_trains.map { |t|
+    name = t["name"]
+    url = t["url"]
+    update_info = t["update_time"]
+    target = t["target"]
+    stations = t["stations"]
+
     last_station = stations.reverse.find { |s| s['dep_actual'] != nil && s["dep_actual"] != "" } || stations.first
     kilo = stations.find { |s| s['name'] == @local_station }
     [name, url, update_info, target, last_station, kilo]

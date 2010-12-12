@@ -58,7 +58,13 @@ class VrParser
       end
     }
     target_station = stations.last['name']
-    [train_name, @base_url + train_url, update_time, target_station, stations]
+
+    { "name" => train_name,
+      "url" => @base_url + train_url,
+      "update_time" => update_time,
+      "target" => target_station,
+      "stations" => stations }
+
   end
 
   def fetch_all_trains(station_code)
