@@ -20,7 +20,7 @@ class VrParser
       post_reply = @html_loader.post_train_list(station, m[1])
       doc = Nokogiri::HTML(post_reply)
       departure_table = doc.css('table.kulkutiedot').first
-      departure_table.css('a').map { |a|
+      departure_table.css('a.lahi').map { |a|
         { 'name' => a.content, 'url' => a['href'] }
       }
     else

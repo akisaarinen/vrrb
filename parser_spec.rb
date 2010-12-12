@@ -16,7 +16,7 @@ describe VrParser, "#fetch_train_list" do
     html_loader.stubs(:get_main_page).returns(default_page)
     html_loader.stubs(:post_train_list).returns(read_test_file("station.espoo.with-notes"))
     trains = parser.fetch_train_list("EPO")
-    trains.should_not == []
+    trains.map { |t| t["name"] }.should == ["U", "S", "S", "U"]
   end
 
   def empty_page
