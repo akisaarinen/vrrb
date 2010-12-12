@@ -31,3 +31,13 @@ Licensing
 ---------
 
 See LICENSE.
+
+Required rubygems
+-----------------
+
+For running vrrb:
+* gem install nokogiri sinatra
+
+
+And for running tests:
+* gem install rspec mocha
