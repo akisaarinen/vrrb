@@ -43,7 +43,12 @@ class VrParser
 
     train_header_info = doc.css('table.header th.alaots').first.content
 
-    train_name = /\s+([a-zA-Z])\s*:/.match(train_header_info)[1]
+    # What a nice, clean regex :)
+    header_regex = /\s+([a-zA-Z])\s*:\s*([\S]+)[^-]+-[\s]+([\S]+)/.match(train_header_info)
+
+    train_name = header_regex[1]
+    train_source = header_regex[2]
+    train_target = header_regex[3]
 
     stations = []
     update_info = doc.css('table.header span.middle').first.content
@@ -70,12 +75,12 @@ class VrParser
 
       end
     }
-    target_station = stations.last['name']
 
     { "name" => train_name,
       "url" => train_url,
       "update_time" => update_time,
-      "target" => target_station,
+      "source" => train_source,
+      "target" => train_target,
       "stations" => stations }
 
   end

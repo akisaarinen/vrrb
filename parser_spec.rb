@@ -39,6 +39,7 @@ describe VrParser, "#fetch_single_train" do
     info["name"].should == "S"
     info["url"].should == "http://service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8551"
     info["update_time"].should == "12.12.2010, klo 19:40."
+    info["source"].should == "Helsinki"
     info["target"].should == "Kirkkonummi"
   end
 end
