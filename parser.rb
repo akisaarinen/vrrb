@@ -33,8 +33,8 @@ class VrParser
     end
   end
 
-  def fetch_single_train(train_id)
-    r = @html_loader.get_train_info_by_id(train_id)
+  def fetch_single_train(original_id)
+    r = @html_loader.get_train_info_by_id(original_id)
     doc = Nokogiri::HTML(r)
 
     new_search_url = doc.css('table.kulkutiedot_footer td.search a').first['href']
@@ -76,7 +76,8 @@ class VrParser
       end
     }
 
-    { "name" => train_name,
+    { "id" => train_id,
+      "name" => train_name,
       "url" => train_url,
       "update_time" => update_time,
       "source" => train_source,
