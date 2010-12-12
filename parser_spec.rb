@@ -27,13 +27,15 @@ describe VrParser, "#fetch_train_list" do
     read_test_file("haku.action")
   end
 
-  def read_test_file(filename)
-    f = File.new("testhtml/" + filename + ".html")
-    contents = ""
-    while (line = f.gets)
-      contents += line
-    end
-    f.close
-    contents
+end
+
+
+def read_test_file(filename)
+  f = File.new("testhtml/" + filename + ".html")
+  contents = ""
+  while (line = f.gets)
+    contents += line
   end
+  f.close
+  contents
 end
