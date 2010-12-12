@@ -16,6 +16,16 @@ get '/' do
   erb :show_all 
 end
 
+get '/api/station/:station.json' do
+  headers 'Content-Type' => "application/json; charset=utf-8"
+  vr_parser.fetch_train_list(params[:station]).to_json
+end
+
+get '/api/train/:id.json' do
+  headers 'Content-Type' => "application/json; charset=utf-8"
+  vr_parser.fetch_single_train(params[:id]).to_json
+end
+
 get '/trains/:route' do
   route_config = $config[params[:route]]
   
