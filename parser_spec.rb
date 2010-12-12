@@ -26,7 +26,22 @@ describe VrParser, "#fetch_train_list" do
   def default_page
     read_test_file("haku.action")
   end
+end
 
+describe VrParser, "#fetch_single_train" do
+  html_loader = VrHtmlLoader.new
+  parser = VrParser.new
+  parser.html_loader = html_loader
+
+  it "parses information for single train from helsinki to kirkkonummi" do
+    html_loader.stubs(:get_train_info).returns(read_test_file("train.s.helsinki-kirkkonummi"))
+    info = parser.fetch_single_train("S", "/trainUrl")
+    info.size.should == 5
+    info[0].should == "S"
+    info[1].should == "http://service.vr.fi/trainUrl"
+    info[2].should == "12.12.2010, klo 19:40."
+    info[3].should == "Kirkkonummi"
+  end
 end
 
 
