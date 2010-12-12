@@ -6,6 +6,7 @@ class VrHtmlLoader
   def initialize
     @base_url = "http://service.vr.fi"
     @train_list_url = "/juku/haku.action?lang=fi&junalaji=ll"
+    @train_info_url = "/juku/juna.action?junalaji=ll&lang=fi"
   end
 
   def get_main_page(station)
@@ -24,8 +25,8 @@ class VrHtmlLoader
     post_reply.body
   end
 
-  def get_train_info(train_url)
-    uri = URI.parse(@base_url + train_url)
+  def get_train_info_by_id(train_id)
+    uri = URI.parse(@base_url + @train_info_url + "&junanro=" + train_id)
     Net::HTTP.get uri
   end
 end

@@ -13,7 +13,6 @@ class VrParser
     @html_loader = VrHtmlLoader.new
   end
 
-
   def fetch_train_list(station)
     r = @html_loader.get_main_page(station)
     if m = /action="([^"]+)"/.match(r)
@@ -21,16 +20,30 @@ class VrParser
       doc = Nokogiri::HTML(post_reply)
       departure_table = doc.css('table.kulkutiedot').first
       departure_table.css('a.lahi').map { |a|
-        { 'name' => a.content, 'url' => a['href'] }
+        train_url = a['href']
+        train_id = find_id(train_url)
+        {
+          'name' => a.content,
+          'id' => train_id,
+          'url' => train_url
+        }
       }
     else
       []
     end
   end
 
-  def fetch_single_train(train_name, train_url)
-    r = @html_loader.get_train_info(train_url)
+  def fetch_single_train(train_id)
+    r = @html_loader.get_train_info_by_id(train_id)
     doc = Nokogiri::HTML(r)
+
+    new_search_url = doc.css('table.kulkutiedot_footer td.search a').first['href']
+    train_id = find_id(new_search_url)
+    train_url = @base_url + "/juku/juna.action?lang=fi&junalaji=ll&junanro=" + train_id
+
+    train_header_info = doc.css('table.header th.alaots').first.content
+
+    train_name = /\s+([a-zA-Z])\s*:/.match(train_header_info)[1]
 
     stations = []
     update_info = doc.css('table.header span.middle').first.content
@@ -60,7 +73,7 @@ class VrParser
     target_station = stations.last['name']
 
     { "name" => train_name,
-      "url" => @base_url + train_url,
+      "url" => train_url,
       "update_time" => update_time,
       "target" => target_station,
       "stations" => stations }
@@ -69,7 +82,14 @@ class VrParser
 
   def fetch_all_trains(station_code)
     fetch_train_list(station_code).map { |t|
-      fetch_single_train(t['name'], t['url'])
+      fetch_single_train(t['id'])
     }
   end
+
+private
+
+  def find_id(train_url)
+    /junanro=([0-9]+)/.match(train_url)[1]
+  end
+
 end

@@ -34,10 +34,10 @@ describe VrParser, "#fetch_single_train" do
   parser.html_loader = html_loader
 
   it "parses information for single train from helsinki to kirkkonummi" do
-    html_loader.stubs(:get_train_info).returns(read_test_file("train.s.helsinki-kirkkonummi"))
-    info = parser.fetch_single_train("S", "/trainUrl")
+    html_loader.stubs(:get_train_info_by_id).returns(read_test_file("train.s.helsinki-kirkkonummi"))
+    info = parser.fetch_single_train("anyId")
     info["name"].should == "S"
-    info["url"].should == "http://service.vr.fi/trainUrl"
+    info["url"].should == "http://service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8551"
     info["update_time"].should == "12.12.2010, klo 19:40."
     info["target"].should == "Kirkkonummi"
   end

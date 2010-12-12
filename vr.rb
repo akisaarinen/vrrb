@@ -4,6 +4,7 @@ require 'uri'
 require 'net/http'
 require 'nokogiri'
 require 'yaml'
+require 'json'
 
 require 'parser.rb'
 
