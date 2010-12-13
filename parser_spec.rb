@@ -1,5 +1,7 @@
+require 'rubygems'
 require 'parser'
 require 'mocha'
+require 'rspec'
 
 describe VrParser, "#fetch_train_list" do
   html_loader = VrHtmlLoader.new
@@ -17,6 +19,8 @@ describe VrParser, "#fetch_train_list" do
     html_loader.stubs(:post_train_list).returns(read_test_file("station.espoo.with-notes"))
     trains = parser.fetch_train_list("EPO")
     trains.map { |t| t["name"] }.should == ["U", "S", "S", "U"]
+    trains.map { |t| t["id"] }.should == ["8552", "8561", "8556", "8565"]
+    trains.map { |t| t["target"] }.should == ["Helsinki", "Kirkkonummi", "Helsinki", "Kirkkonummi"]
   end
 
   def empty_page

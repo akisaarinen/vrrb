@@ -19,15 +19,21 @@ class VrParser
       post_reply = @html_loader.post_train_list(station, m[1])
       doc = Nokogiri::HTML(post_reply)
       departure_table = doc.css('table.kulkutiedot').first
-      departure_table.css('a.lahi').map { |a|
-        train_url = a['href']
+
+      rows = departure_table.css('tr').to_a.delete_if { |tr| tr['class'] == 'table_header' }
+
+      return rows.map { |row| 
+        link = row.css('a.lahi').first
+        target = row.css('td')[4].content
+        train_url = link['href']
         train_id = find_id(train_url)
         {
-          'name' => a.content,
+          'name' => link.content,
           'id' => train_id,
-          'url' => train_url
+          'url' => train_url,
+          'target' => target
         }
-      }
+      } 
     else
       []
     end
