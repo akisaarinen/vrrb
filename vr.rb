@@ -60,9 +60,15 @@ get '/trains/:route' do
     stations = t["stations"]
 
     last_station = stations.reverse.find { |s| s['dep_actual'] != nil && s["dep_actual"] != "" } || stations.first
+    puts "name: " + name
     kilo = stations.find { |s| s['name'] == @local_station }
-    [name, url, update_info, target, last_station, kilo]
+    if (kilo == nil) 
+      nil 
+    else
+      [name, url, update_info, target, last_station, kilo]
+    end
   }
+  @trains = @trains.select { |x| x != nil }
   erb :show_single
 end
 
