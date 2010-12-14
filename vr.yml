@@ -9,3 +9,9 @@ Kilosta Kirkkonummen suuntaan:
     source_station: Helsinki
     local_station: Kilo
     reference_station_code: LPV
+
+Tuomarila-Helsinki:
+    select_by_target: yes
+    target_station: Helsinki
+    local_station: Tuomarila
+    reference_station_code: EPO
