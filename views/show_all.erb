@@ -2,19 +2,57 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>Juna-aikataulut</title>
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <style type="text/css">
     body {
-      font-family: Helvetica, Arial;
-      font-size: 12px;
+      font-family: helvetica, arial;
+      font-size: 15px;
+      margin: 0px;
+      padding: 0px;
+    }
+    h1 {
+      padding-left: 5px;
+    }
+    h1,h2,h3 {
+      font-size: 16px;
+    }
+    h2 {
+      width: 100%;
+      background-color: #444;
+      color: white;
+      margin: 0px;
+    }
+    h2 .pad {
+      padding: 10px;
+    }
+    h2 a {
+      text-decoration:none;
+    }
+    h2 .dep-time {
+      font-size: 24px;
+      background-color: #eee;
+      color: black;
+      border-radius: 4px;
+      padding: 4px;
+    }
+    h2 .train, h2 .late-info {
+      font-size: 30px;
+      color: white;
+      padding-left: 10px;
+    }
+    div.traininfo {
+      background-color: #eee;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    div.traininfo .late-info {
+      color: #f00;
     }
     p {
       margin-left: 10px;
       margin-top: 0px;
       margin-bottom: 0px;
-    }
-    .late-info {
-      color: #f00;
-      font-weight: bold;
     }
     .no-info {
       color: #888;
@@ -26,13 +64,20 @@
     .departure-time, .last-location {
       font-weight: bold;
     }
-    div {
-      margin-top: 10px;
+    ul.bottom-links {
+      border-bottom: 1px solid #888;
+      border-top: 1px solid #888;
+      background-color: #ddd;
+      margin: 0px;
     }
-    a {
-      font-weight: normal;
-      font-size: 10px;
-      color: #888;
+    ul.bottom-links a {
+      color: black;
+      font-size: 16px;
+    }
+    ul.bottom-links li {
+      color: black;
+      font-size: 16px;
+      padding: 2px;
     }
   </style>
 </head>
@@ -45,8 +90,8 @@
     <li><a href="trains/<%=name%>"><%=name%></a></li>
     <% end %>
   </ul>
-  <div class="service-info">
-    <a href="http://service.vr.fi/juku/haku.action?lang=fi&junalaji=ll">Suorat haut VR:lt&auml</a>
-  </div>
+  <ul class="bottom-links">
+    <li><a href="http://service.vr.fi/juku/haku.action?lang=fi&junalaji=ll">Suorat haut VR:lt&auml</a></li>
+  </ul>
 </body>
 </html>

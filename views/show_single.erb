@@ -2,19 +2,57 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>Junat asemalta <%= @local_station %></title>
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <style type="text/css">
     body {
-      font-family: Helvetica, Arial;
-      font-size: 12px;
+      font-family: helvetica, arial;
+      font-size: 15px;
+      margin: 0px;
+      padding: 0px;
+    }
+    h1 {
+      padding-left: 5px;
+    }
+    h1,h2,h3 {
+      font-size: 16px;
+    }
+    h2 {
+      width: 100%;
+      background-color: #444;
+      color: white;
+      margin: 0px;
+    }
+    h2 .pad {
+      padding: 10px;
+    }
+    h2 a {
+      text-decoration:none;
+    }
+    h2 .dep-time {
+      font-size: 24px;
+      background-color: #eee;
+      color: black;
+      border-radius: 4px;
+      padding: 4px;
+    }
+    h2 .train, h2 .late-info {
+      font-size: 30px;
+      color: white;
+      padding-left: 10px;
+    }
+    div.traininfo {
+      background-color: #eee;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    div.traininfo .late-info {
+      color: #f00;
     }
     p {
       margin-left: 10px;
       margin-top: 0px;
       margin-bottom: 0px;
-    }
-    .late-info {
-      color: #f00;
-      font-weight: bold;
     }
     .no-info {
       color: #888;
@@ -26,55 +64,56 @@
     .departure-time, .last-location {
       font-weight: bold;
     }
-    div {
-      margin-top: 10px;
+    ul.bottom-links {
+      border-bottom: 1px solid #888;
+      border-top: 1px solid #888;
+      background-color: #ddd;
+      margin: 0px;
     }
-    a {
-      font-weight: normal;
-      font-size: 10px;
-      color: #888;
+    ul.bottom-links a {
+      color: black;
+      font-size: 16px;
+    }
+    ul.bottom-links li {
+      color: black;
+      font-size: 16px;
+      padding: 2px;
     }
   </style>
 </head>
 <body>
   <h1>
-    Junat asemalta <%= @local_station %>
     <% if @select_by_target %>
-      kohteeseen <%= @target_station %>
+      <%= @local_station %> - <%= @target_station %>
     <% else %>
-      jotka l&auml;htev&auml;t asemalta <%= @source_station %>
+      <%= @source_station %> - <%= @local_station %>
     <% end %>
     (<%= @trains.size %> kpl)
   </h1>
   <% @trains.each do |name, url, update_info, target, last_station, kilo|
         info_available = last_station['dep_actual'] != ""
   %>
-    <h2>&raquo; <%= name %>-juna klo <%= kilo['dep_sched'] %>
-      -
-      <% if info_available %>
-          <span class="late-info">
-            <%=
-              if last_station['dep_actual'] == ""
-                  "ei vielŠ liikennetietoja"
-              elsif last_station['dep_actual'] != last_station['dep_sched']
-                s_time = Time.parse(last_station['dep_sched'])
-                a_time = Time.parse(last_station['dep_actual'])
-                "#{((a_time - s_time).to_i / 60.0)} min my&ouml;h&auml;ss&auml;"
-              else
-                "aikataulussa"
-              end
-            %>
-          </span>
-      <% else %>
-          <span class="no-info">
-            ei viel&auml; tietoja
-          </span>
-      <% end %>
-      <a href="<%= url %>">(@vr.fi)</a>
+    <h2>
+      <div class="pad">
+      <a href="<%= url %>">
+      <span class="dep-time"><%= kilo['dep_sched'] %></span>
+      <span class="train"><%= name %></span>
+      <span class="late-info">
+        <%=
+          if last_station['dep_actual'] != "" && last_station['dep_actual'] != last_station['dep_sched']
+            s_time = Time.parse(last_station['dep_sched'])
+            a_time = Time.parse(last_station['dep_actual'])
+            "(#{((a_time - s_time).to_i / 60)} min)"
+          end
+        %>
+      </span>
+      </a>
+    </div>
     </h2>
+    <div class="trainInfo">
       <% if info_available %>
           <p>
-            Viimeisin tunnettu sijainti:
+            Sijainti 
             <span class="last-location"><%= last_station['name'] %></span>
             kello
             <span class="departure-time">
@@ -83,13 +122,16 @@
           </p>
           <p>M&auml;&auml;r&auml;np&auml;&auml;: <%= target %></p>
           <p class="update-info">P&auml;ivitetty <%= update_info %></p>
+      <% else %>
+          <p class="no-info">
+            Ei viel&auml; tietoja
+          </p>
       <% end %>
+    </div>
   <% end %> 
-  <div>
-    <a href="/">Takaisin listaukseen</a>
-  </div>
-  <div class="service-info">
-    <a href="http://service.vr.fi/juku/haku.action?lang=fi&junalaji=ll">Suorat haut VR:lt&auml</a>
-  </div>
+  <ul class="bottom-links">
+    <li><a href="/">Takaisin listaukseen</a></li>
+    <li><a href="http://service.vr.fi/juku/haku.action?lang=fi&junalaji=ll">Suorat haut VR:lt&auml</a></li>
+  </ul>
 </body>
 </html>
