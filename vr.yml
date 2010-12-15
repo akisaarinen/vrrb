@@ -15,3 +15,9 @@ Tuomarila-Helsinki:
     target_station: Helsinki
     local_station: Tuomarila
     reference_station_code: EPO
+
+Espoo-Helsinki:
+    select_by_target: yes
+    target_station: Helsinki
+    local_station: Espoo
+    reference_station_code: EPO
