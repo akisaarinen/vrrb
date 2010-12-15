@@ -17,23 +17,29 @@ class VrParser
     r = @html_loader.get_main_page(station)
     if m = /action="([^"]+)"/.match(r)
       post_reply = @html_loader.post_train_list(station, m[1])
+      puts "Processing station " + station
       doc = Nokogiri::HTML(post_reply)
       departure_table = doc.css('table.kulkutiedot').first
 
       rows = departure_table.css('tr').to_a.delete_if { |tr| tr['class'] == 'table_header' }
 
-      return rows.map { |row| 
+      rows.map { |row| 
+        puts "Processing " + row.to_s
         link = row.css('a.lahi').first
-        target = row.css('td')[4].content
-        train_url = link['href']
-        train_id = find_id(train_url)
-        {
-          'name' => link.content,
-          'id' => train_id,
-          'url' => train_url,
-          'target' => target
-        }
-      } 
+        if link 
+          target = row.css('td')[4].content
+          train_url = link['href']
+          train_id = find_id(train_url)
+          {
+            'name' => link.content,
+            'id' => train_id,
+            'url' => train_url,
+            'target' => target
+          }
+        else 
+          nil
+        end
+      }.select {|r| r != nil }
     else
       []
     end
