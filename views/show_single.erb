@@ -46,7 +46,7 @@
       border-radius: 4px;
       padding: 4px;
     }
-    h2 .train, h2 .time-left {
+    h2 .train {
       font-size: 30px;
       color: white;
       padding-left: 10px;
@@ -69,14 +69,24 @@
       margin-top: 0px;
       margin-bottom: 0px;
     }
-    .no-info {
+    .time-left {
+      font-size: 20px;
+      font-weight: bold;
+      color: #888;
+      width: 100%;
+      background-color: #ddd;
+      padding: 2px;
+    }
+    .time-left .minutes {
+      font-size: 24px;
+      color: #000;
+    }
+    .no-info, .update-info, .station-info {
       color: #888;
       font-weight: normal;
     }
-    .update-info {
-      color: #888;
-    }
     .departure-time, .last-location {
+      color: #000;
       font-weight: bold;
     }
     ul.bottom-links {
@@ -123,21 +133,18 @@
       <a href="<%= url %>">
       <span class="dep-time"><%= kilo['dep_sched'] %></span>
       <% if late_minutes != 0 %>
-        <span class="separator">&gt;</span>
-        <span class="est-time">
-          <%= est_time.strftime("%H:%M") %>
-        </span>
+        <span class="est-time"><%= est_time.strftime("%H:%M") %></span>
       <% end %>
       <span class="train"><%= name %></span>
-      <span class="time-left">
-        (<%= time_left %> min)
-      </span>
       </a>
     </div>
     </h2>
     <div class="trainInfo">
+      <div class="time-left">
+      L&auml;ht&ouml;&ouml;n <span class="minutes"><%= time_left %> min</span>
+      </div>
       <% if info_available %>
-          <p>
+          <p class="station-info">
             Sijainti 
             <span class="last-location"><%= last_station['name'] %></span>
             kello
@@ -145,8 +152,10 @@
               <%= last_station['dep_actual'] %>
             </span>
           </p>
-          <p>M&auml;&auml;r&auml;np&auml;&auml;: <%= target %></p>
-          <p class="update-info">P&auml;ivitetty <%= update_info %></p>
+          <p class="update-info">
+            M&auml;&auml;r&auml;np&auml;&auml;: <%= target %><br>
+            P&auml;ivitetty <%= update_info %>
+          </p>
       <% else %>
           <p class="no-info">
             Ei viel&auml; tietoja
