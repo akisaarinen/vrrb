@@ -31,6 +31,14 @@
     h2 a {
       text-decoration:none;
     }
+    h2 .est-time {
+      font-size: 24px;
+      background-color: #ccc;
+      color: black;
+      border-radius: 4px;
+      border: 1px solid #888;
+      padding: 4px;
+    }
     h2 .dep-time {
       font-size: 24px;
       background-color: #eee;
@@ -38,10 +46,15 @@
       border-radius: 4px;
       padding: 4px;
     }
-    h2 .train, h2 .late-info {
+    h2 .train, h2 .time-left {
       font-size: 30px;
       color: white;
       padding-left: 10px;
+    }
+    h2 .separator {
+      font-size: 30px;
+      color: white;
+      font-weight: normal;
     }
     div.traininfo {
       background-color: #eee;
@@ -94,20 +107,30 @@
   </h1>
   <% @trains.each do |name, url, update_info, target, last_station, kilo|
         info_available = last_station['dep_actual'] != ""
+        late_minutes = 0
+        if last_station['dep_actual'] != "" && last_station['dep_actual'] != last_station['dep_sched']
+          s_time = Time.parse(last_station['dep_sched'])
+          a_time = Time.parse(last_station['dep_actual'])
+          late_minutes = (a_time - s_time).to_i / 60
+        end
+        dep_sched = Time.parse(kilo['dep_sched'])
+        est_time = Time.at(dep_sched.to_i + late_minutes * 60)
+        now = Time.new
+        time_left = (est_time - now).to_i / 60
   %>
     <h2>
       <div class="pad">
       <a href="<%= url %>">
       <span class="dep-time"><%= kilo['dep_sched'] %></span>
+      <% if late_minutes != 0 %>
+        <span class="separator">&gt;</span>
+        <span class="est-time">
+          <%= est_time.strftime("%H:%M") %>
+        </span>
+      <% end %>
       <span class="train"><%= name %></span>
-      <span class="late-info">
-        <%=
-          if last_station['dep_actual'] != "" && last_station['dep_actual'] != last_station['dep_sched']
-            s_time = Time.parse(last_station['dep_sched'])
-            a_time = Time.parse(last_station['dep_actual'])
-            "(#{((a_time - s_time).to_i / 60)} min)"
-          end
-        %>
+      <span class="time-left">
+        (<%= time_left %> min)
       </span>
       </a>
     </div>
