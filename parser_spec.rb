@@ -23,6 +23,24 @@ describe VrParser, "#fetch_train_list" do
     trains.map { |t| t["target"] }.should == ["Helsinki", "Kirkkonummi", "Helsinki", "Kirkkonummi"]
   end
 
+  it "fetches list of trains in Espoo with empty rows" do 
+    html_loader.stubs(:get_main_page).returns(default_page)
+    html_loader.stubs(:post_train_list).returns(read_test_file("station.espoo.with-empty-row"))
+    trains = parser.fetch_train_list("EPO")
+    trains.map { |t| t["name"] }.should == ["U", "U"]
+    trains.map { |t| t["id"] }.should == ["8587", "8584"]
+    trains.map { |t| t["target"] }.should == ["Kirkkonummi", "Helsinki"]
+  end
+  
+  it "fetches list of trains in Espoo with lots of trains" do 
+    html_loader.stubs(:get_main_page).returns(default_page)
+    html_loader.stubs(:post_train_list).returns(read_test_file("station.espoo.many-trains"))
+    trains = parser.fetch_train_list("EPO")
+    trains.map { |t| t["name"] }.should == ["L", "L", "S", "E", "E", "U", "U", "E", "E", "U"]
+    trains.map { |t| t["id"] }.should == ["8416", "8424", "8465", "8318", "8323", "8464", "8471", "8324", "8325", "8466"]
+    trains.map { |t| t["target"] }.should == ["Helsinki", "Helsinki", "Kirkkonummi", "Helsinki", "Kauklahti", "Helsinki", "Kirkkonummi", "Helsinki", "Kauklahti", "Helsinki"]
+  end
+
   def empty_page
       ""
   end
