@@ -40,6 +40,15 @@ describe VrParser, "#fetch_train_list" do
     trains.map { |t| t["id"] }.should == ["8416", "8424", "8465", "8318", "8323", "8464", "8471", "8324", "8325", "8466"]
     trains.map { |t| t["target"] }.should == ["Helsinki", "Helsinki", "Kirkkonummi", "Helsinki", "Kauklahti", "Helsinki", "Kirkkonummi", "Helsinki", "Kauklahti", "Helsinki"]
   end
+ 
+  it "fetches list of trains in Leppävaara with Y-train" do 
+    html_loader.stubs(:get_main_page).returns(default_page)
+    html_loader.stubs(:post_train_list).returns(read_test_file("station.leppavaara.with.y-train"))
+    trains = parser.fetch_train_list("EPO")
+    trains.map { |t| t["name"] }.should == ["E","Y","A","U","S","E","E","Y","A","S"]
+    trains.map { |t| t["id"] }.should == ["8382", "8553", "8272", "8555", "8546", "8385", "8384", "8550", "8276", "8561"]
+    trains.map { |t| t["target"] }.should == ["Helsinki", "Karjaa", "Helsinki", "Kirkkonummi", "Helsinki", "Kauklahti", "Helsinki", "Helsinki", "Helsinki", "Kirkkonummi"]
+  end
 
   def empty_page
       ""
