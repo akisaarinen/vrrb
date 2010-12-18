@@ -66,6 +66,18 @@ describe VrParser, "#fetch_single_train" do
     info["source"].should == "Helsinki"
     info["target"].should == "Kirkkonummi"
   end
+  
+  it "parses information for single train from helsinki to karjaa" do
+    html_loader.stubs(:get_train_info_by_id).returns(read_test_file("train.y.helsinki-karjaa"))
+    info = parser.fetch_single_train("anyId")
+
+    info["id"].should == "8553"
+    info["name"].should == "Y"
+    info["url"].should == "http://service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8553"
+    info["update_time"].should == "14.12.2010, klo 19:45."
+    info["source"].should == "Helsinki"
+    info["target"].should == "Karjaa"
+  end
 end
 
 
