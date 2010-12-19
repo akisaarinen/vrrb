@@ -38,10 +38,10 @@ Required rubygems
 -----------------
 
 For running vrrb:
-* gem install nokogiri sinatra
+    gem install nokogiri sinatra
 
 And for running tests:
-* gem install rspec mocha
+    gem install rspec mocha
 
 Known issues / future development:
 ----------------------------------
