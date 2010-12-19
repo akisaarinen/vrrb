@@ -1,47 +1,41 @@
 vrrb - show local train timetables in a nice format
 ===================================================
 
-What?
------
+![screenshot!](https://github.com/akisaarinen/vrrb/raw/master/screenshot.png)
 
-vrrb is a simple sinatra web application which shows real-time timetables for
-local trains in Helsinki area from vr.fi, formatted nicely for a station of
-your choice. Especially suitable for mobile phone use.
+vrrb is a simple web application, showing real-time timetables for local trains
+in Helsinki area, formatted nicely for a station of your choice. Especially
+suitable for mobile phone use. Train timestables are fetched from vr.fi (as
+ugly HTML), parsed and then displayed.
 
-Note that the application currently renders Finnish only.
+Note that the application currently renders <b>Finnish only</b>.
 
 Why?
 ----
 
-You can configure the application for your station and it will show all
-available real-time timetable information from vr.fi in one view, so you can
-check when does the next train leave and if it seems to be delayed. VR does not
-provide such a view, only an UI which requires clicks after clicks if you want
-to see anything remotely useful.
+In one word: convenience. You'll see all available real-time timetable
+information for your station from vr.fi in one view, so you can check when does
+the next train leave and if it seems to be delayed. VR does not provide such a
+view, only an UI which requires clicks after clicks if you want to see anything
+remotely useful.
 
 How?
 ----
-
 Setup ruby with required gems (see vr.rb) and run with ruby. Will bind to port
 4567 and start serving the nice little view.
 
-Screenshot of my home station with iPhone:
+Required rubygems for running vr.rb:
+    gem install nokogiri sinatra
 
-![screenshot!](https://github.com/akisaarinen/vrrb/raw/master/screenshot.png)
+If you want to develop vrrb further, you will most probably like to run
+the automatic tests too. Required rubygems for tests are:
+
+    gem install rspec mocha
 
 Licensing
 ---------
 
 See LICENSE.
-
-Required rubygems
------------------
-
-For running vrrb:
-    gem install nokogiri sinatra
-
-And for running tests:
-    gem install rspec mocha
 
 Known issues / future development:
 ----------------------------------
