@@ -40,6 +40,13 @@ Required rubygems
 For running vrrb:
 * gem install nokogiri sinatra
 
-
 And for running tests:
 * gem install rspec mocha
+
+Known issues / future development:
+----------------------------------
+* Notifications from vr.fi are not displayed (e.g. reason for delay)
+* When train has already left, current the UI shows "-5 minutes until departure".
+* Vr.fi sometimes displays very old trains (~5 hours) if they have been cancelled
+  and never left. These should be dropped from the UI, because those hanging on top
+  of the list is not very useful.
