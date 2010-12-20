@@ -104,6 +104,13 @@
       font-size: 16px;
       padding: 2px;
     }
+    div.reload {
+      float:right;
+      font-weight:bold;
+    }
+    div.reload a {
+      color: black;
+    }
   </style>
 </head>
 <body>
@@ -114,6 +121,7 @@
       <%= @source_station %> - <%= @local_station %>
     <% end %>
     (<%= @trains.size %> kpl)
+    <div class="reload"><a href="#" onclick="location.reload()">[Refresh]</a>
   </h1>
   <% @trains.each do |name, url, update_info, target, last_station, kilo|
         info_available = last_station['dep_actual'] != ""

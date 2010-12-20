@@ -39,7 +39,6 @@ See LICENSE.
 
 Known issues / future development:
 ----------------------------------
-* Refresh-button missing (useful if using fullscreen with iphone)
 * Ajaxified refresh for single train would be useful
 * Notifications from vr.fi are not displayed (e.g. reason for delay)
 * When train has already left, current the UI shows "-5 minutes until departure".
