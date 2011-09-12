@@ -4,7 +4,7 @@ require 'net/http'
 
 class VrHtmlLoader
   def initialize
-    @base_url = "http://service.vr.fi"
+    @base_url = "http://ext-service.vr.fi"
     @train_list_url = "/juku/haku.action?lang=fi&junalaji=ll"
     @train_info_url = "/juku/juna.action?junalaji=ll&lang=fi"
   end

@@ -9,7 +9,7 @@ class VrParser
   attr_accessor :html_loader
 
   def initialize
-    @base_url = "http://service.vr.fi"
+    @base_url = "http://ext-service.vr.fi"
     @html_loader = VrHtmlLoader.new
   end
 
