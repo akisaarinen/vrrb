@@ -3,7 +3,7 @@ require 'uri'
 require 'net/http'
 require 'nokogiri'
 
-require 'html_loader.rb'
+require './html_loader.rb'
 
 class VrParser
   attr_accessor :html_loader

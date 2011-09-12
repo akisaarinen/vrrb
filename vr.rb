@@ -8,7 +8,7 @@ require 'nokogiri'
 require 'yaml'
 require 'json'
 
-require 'parser.rb'
+require './parser.rb'
 
 $config = YAML.load_file("vr.yml")
 vr_parser = VrParser.new
