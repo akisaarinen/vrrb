@@ -1,2 +1,2 @@
-require './vr'
+require './hello'
 run Sinatra::Application
