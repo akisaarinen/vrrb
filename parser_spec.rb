@@ -1,7 +1,5 @@
-require 'rubygems'
+require 'spec_helper'
 require 'parser'
-require 'mocha'
-require 'rspec'
 
 describe VrParser, "#fetch_train_list" do
   html_loader = VrHtmlLoader.new
