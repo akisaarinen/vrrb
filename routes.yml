@@ -100,3 +100,13 @@ trains:
     - Jorvas
     - Tolsa
     - KKN
+  - name: A
+    stations:
+    - HKI
+    - Pasila
+    - Ilmala
+    - HPL
+    - Valimo
+    - Pitäjänmäki
+    - Mäkkylä
+    - LPV
