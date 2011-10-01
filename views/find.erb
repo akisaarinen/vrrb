@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title>Vrrb: Real-time VR trains</title>
+  <title>Vrrb: Junat reaaliajassa</title>
   <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="apple-touch-startup-image" href="/splash.png" />
@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="chosen/chosen.css" />
 </head>
 <body>
-  <h1>Vrrb: Real-time VR trains</h1>
+  <h1>Vrrb: Junat reaaliajassa</h1>
   <form action="showtrains" method="get">
-  From<br/>
+  L&auml;ht&ouml;asema<br/>
   <select id="from" name="from" class="chzn-select">
       <% @stations.each do |station| %>
       <%= if (station == @default_from) then "<option selected>" else "<option>" end %>
@@ -21,7 +21,7 @@
       <% end %>
   </select>
       <br/>
-  To<br/>
+  Kohdeasema<br/>
   <select id="to" name="to" class="chzn-select">
       <% @stations.each do |station| %>
       <%= if (station == @default_to) then "<option selected>" else "<option>" end %>
@@ -30,7 +30,7 @@
       <% end %>
   </select>
   <br/>
-  <input class="button" type="submit" value="Find">
+  <input class="button" type="submit" value="Hae junat">
   </form>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
