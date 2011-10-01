@@ -9,7 +9,7 @@ describe Trains, "when loaded" do
   end
 end
 
-describe Trains, "find trains for legs" do
+describe Trains, "find trains for leg" do
   trains = Trains.load_trains
 
   siuntio = trains.find_station_by_name("Siuntio")
@@ -20,28 +20,28 @@ describe Trains, "find trains for legs" do
   pasila = trains.find_station_by_name("Pasila")
   hki = trains.find_station_by_name("Helsinki")
 
-  it "all trains from Kilo to Helsinki" do
+  it "from Kilo to Helsinki" do
     trains.trains_for_leg(kilo, hki).map{|t|t.name}.should == ["E", "S", "U", "L"]
   end
 
-  it "all trains from Siuntio to Pasila" do
+  it "from Siuntio to Pasila" do
     trains.trains_for_leg(siuntio, pasila).map{|t|t.name}.should == ["Y"]
   end
 
-  it "all trains from Siuntio to Kilo" do
+  it "from Siuntio to Kilo" do
     trains.trains_for_leg(siuntio, kilo).map{|t|t.name}.should == []
   end
 
-  it "all trains from Masala to Ilmala" do
+  it "from Masala to Ilmala" do
     trains.trains_for_leg(masala, ilmala).map{|t|t.name}.should == ["L"]
   end
 
-  it "all trains from Leppävaara to Helsinki" do
+  it "from Leppävaara to Helsinki" do
     trains.trains_for_leg(lpv, hki).map{|t|t.name}.should == ["Y", "E", "S", "U", "L", "A"]
   end
 end
 
-describe Trains, "find best measurable stations for legs" do
+describe Trains, "find best measurable stations for leg" do
   trains = Trains.load_trains
 
   y_train = trains.find_train_by_name("Y")
@@ -59,7 +59,7 @@ describe Trains, "find best measurable stations for legs" do
   ilmala = trains.find_station_by_name("Ilmala")
   hki = trains.find_station_by_name("Helsinki")
 
-  it "all trains from Kilo to Helsinki" do
+  it "from Kilo to Helsinki" do
     trains.trains_with_measurable_stations_for_leg(kilo, hki).should ==
         [{:train => e_train, :station => espoo},
          {:train => s_train, :station => espoo},
@@ -67,18 +67,17 @@ describe Trains, "find best measurable stations for legs" do
          {:train => l_train, :station => espoo}]
   end
 
-  it "all trains from Ilmala to Kirkkonummi" do
+  it "from Ilmala to Kirkkonummi" do
     trains.trains_with_measurable_stations_for_leg(ilmala, kkn).should ==
         [{:train => l_train, :station => hki}]
   end
 
-  it "all trains from Siuntio to Leppävaara" do
+  it "from Siuntio to Leppävaara" do
     trains.trains_with_measurable_stations_for_leg(siuntio, lpv).should ==
         [{:train => y_train, :station => karjaa}]
   end
 
-
-  it "all trains from Leppävaara to Kilo" do
+  it "from Leppävaara to Kilo" do
     trains.trains_with_measurable_stations_for_leg(lpv, kilo).should ==
         [{:train => e_train, :station => lpv},
          {:train => s_train, :station => lpv},
