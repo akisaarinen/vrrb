@@ -1,6 +1,7 @@
 require 'rubygems'
-require 'trains'
-require 'parser'
+
+require './trains'
+require './parser'
 
 class LegInfoFinder
   attr_reader :trains

@@ -8,8 +8,8 @@ require 'nokogiri'
 require 'yaml'
 require 'json'
 
-require './parser.rb'
-require 'leg_info_finder'
+require './parser'
+require './leg_info_finder'
 
 vr_parser = VrParser.new
 leg_info_finder = LegInfoFinder.new
