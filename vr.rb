@@ -74,21 +74,6 @@ get '/trains/:route' do
   erb :show_single
 end
 
-get '/ajax-loader.gif' do
-  headers 'Content-type' => 'image/gif'
-  File.read('ajax-loader.gif')
-end
-
-get '/icon.png' do
-  headers 'Content-type' => 'image/png'
-  File.read('icon.png')
-end
-
-get '/splash.png' do
-  headers 'Content-type' => 'image/png'
-  File.read('splash.png')
-end
-
 # reqs:
 # ruby1.8-dev
 # libxslt-ruby
