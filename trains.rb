@@ -11,6 +11,10 @@ class Station
   def measurable?
     @code != nil
   end
+
+  def ==(other)
+    other != nil && other.name == @name && other.stations == @stations
+  end
 end
 
 class Train
@@ -18,6 +22,14 @@ class Train
   def initialize(name, stations)
     @name = name
     @stations = stations
+  end
+
+  def reverse
+    Train.new(@name, stations.reverse)
+  end
+
+  def ==(other)
+    other != nil && other.name == @name && other.stations == @stations
   end
 end
 
@@ -37,26 +49,22 @@ class Trains
     trains.select {|t|
       t.stations.include?(from) &&
       t.stations.include?(to)
+    }.map {|t|
+      if t.stations.index(from) <= t.stations.index(to)
+        t
+      else
+        t.reverse
+      end
     }
   end
 
   def trains_with_measurable_stations_for_leg(from, to)
     throw "Same source and destinations" if from == to
     trains_for_leg(from, to).map {|train|
-      timetable_from_index = train.stations.index(from)
-      timetable_to_index = train.stations.index(to)
-
-      sorted_stations =
-          if (timetable_from_index < timetable_to_index)
-            train.stations
-          else
-            train.stations.reverse
-          end
-
-      from_index = sorted_stations.index(from)
-      measurable_before_from = sorted_stations.
+      from_index = train.stations.index(from)
+      measurable_before_from = train.stations.
           select { |s| s.measurable? }.
-          select {|s| sorted_stations.index(s) <= from_index }
+          select {|s| train.stations.index(s) <= from_index }
       best_measurable_station = measurable_before_from.last
       { :train => train,
         :station => best_measurable_station }

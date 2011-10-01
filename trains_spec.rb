@@ -61,10 +61,10 @@ describe Trains, "find best measurable stations for leg" do
 
   it "from Kilo to Helsinki" do
     trains.trains_with_measurable_stations_for_leg(kilo, hki).should ==
-        [{:train => e_train, :station => espoo},
-         {:train => s_train, :station => espoo},
-         {:train => u_train, :station => espoo},
-         {:train => l_train, :station => espoo}]
+        [{:train => e_train.reverse, :station => espoo},
+         {:train => s_train.reverse, :station => espoo},
+         {:train => u_train.reverse, :station => espoo},
+         {:train => l_train.reverse, :station => espoo}]
   end
 
   it "from Ilmala to Kirkkonummi" do
@@ -74,7 +74,7 @@ describe Trains, "find best measurable stations for leg" do
 
   it "from Siuntio to Leppävaara" do
     trains.trains_with_measurable_stations_for_leg(siuntio, lpv).should ==
-        [{:train => y_train, :station => karjaa}]
+        [{:train => y_train.reverse, :station => karjaa}]
   end
 
   it "from Leppävaara to Kilo" do
