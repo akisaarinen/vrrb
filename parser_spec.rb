@@ -68,7 +68,7 @@ describe VrParser, "#fetch_single_train" do
 
     info["id"].should == "8551"
     info["name"].should == "S"
-    info["url"].should == "http://service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8551"
+    info["url"].should == "http://ext-service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8551"
     info["update_time"].should == "12.12.2010, klo 19:40."
     info["source"].should == "Helsinki"
     info["target"].should == "Kirkkonummi"
@@ -80,7 +80,7 @@ describe VrParser, "#fetch_single_train" do
 
     info["id"].should == "8553"
     info["name"].should == "Y"
-    info["url"].should == "http://service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8553"
+    info["url"].should == "http://ext-service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8553"
     info["update_time"].should == "14.12.2010, klo 19:45."
     info["source"].should == "Helsinki"
     info["target"].should == "Karjaa"
