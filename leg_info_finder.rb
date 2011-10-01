@@ -11,6 +11,8 @@ class LegInfoFinder
   end
 
   def realtime_trains_for_leg(from, to)
+    return [] if from == to
+
     trains_with_measure_station = @trains.trains_with_measurable_stations_for_leg(from,to)
     uniq_stations = trains_with_measure_station.map { |twms| twms[:station] }.uniq
     trains_leaving_stations = uniq_stations.map {|station|
