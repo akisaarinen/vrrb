@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Find trains</title>
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-startup-image" href="/splash.png" />
+  <link rel="apple-touch-icon" href="/icon.png" />
+  <style type="text/css">
+    body {
+      font-family: helvetica, arial;
+      font-size: 15px;
+      margin: 0px;
+      padding: 0px;
+    }
+    h1 {
+      padding-left: 5px;
+    }
+    h1,h2,h3 {
+      font-size: 16px;
+    }
+    h2 {
+      width: 100%;
+      background-color: #444;
+      color: white;
+      margin: 0px;
+    }
+    h2 .pad {
+      padding: 10px;
+    }
+    h2 a {
+      text-decoration:none;
+    }
+    h2 .est-time {
+      font-size: 24px;
+      background-color: #ccc;
+      color: black;
+      border-radius: 4px;
+      border: 1px solid #888;
+      padding: 4px;
+    }
+    h2 .dep-time {
+      font-size: 24px;
+      background-color: #eee;
+      color: black;
+      border-radius: 4px;
+      padding: 4px;
+    }
+    h2 .train {
+      font-size: 30px;
+      color: white;
+      padding-left: 10px;
+    }
+    h2 .separator {
+      font-size: 30px;
+      color: white;
+      font-weight: normal;
+    }
+    div.traininfo {
+      background-color: #eee;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    div.traininfo .late-info {
+      color: #f00;
+    }
+    p {
+      margin-left: 10px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+    .time-left {
+      font-size: 20px;
+      font-weight: bold;
+      color: #888;
+      width: 100%;
+      background-color: #ddd;
+      padding: 2px;
+    }
+    .time-left .minutes {
+      font-size: 24px;
+      color: #000;
+    }
+    .no-info, .update-info, .station-info {
+      color: #888;
+      font-weight: normal;
+    }
+    .departure-time, .last-location {
+      color: #000;
+      font-weight: bold;
+    }
+    ul.bottom-links {
+      border-bottom: 1px solid #888;
+      border-top: 1px solid #888;
+      background-color: #ddd;
+      margin: 0px;
+    }
+    ul.bottom-links a {
+      color: black;
+      font-size: 16px;
+    }
+    ul.bottom-links li {
+      color: black;
+      font-size: 16px;
+      padding: 2px;
+    }
+    div.reload {
+      float:right;
+      font-weight:bold;
+    }
+    div.reload a {
+      color: black;
+    }
+
+
+    #from, #to {
+        width: 200px;
+    }
+
+
+    .button
+    {
+        display: inline-block;
+        white-space: nowrap;
+        background-color: #ddd;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc));
+        background-image: -webkit-linear-gradient(top, #eee, #ccc);
+        background-image: -moz-linear-gradient(top, #eee, #ccc);
+        background-image: -ms-linear-gradient(top, #eee, #ccc);
+        background-image: -o-linear-gradient(top, #eee, #ccc);
+        background-image: linear-gradient(top, #eee, #ccc);
+        border: 1px solid #777;
+        padding: 0 1.5em;
+        margin: 0.5em;
+        font: bold 1em/2em Arial, Helvetica;
+        text-decoration: none;
+        color: #333;
+        text-shadow: 0 1px 0 rgba(255,255,255,.8);
+        -moz-border-radius: .2em;
+        -webkit-border-radius: .2em;
+        border-radius: .2em;
+        -moz-box-shadow: 0 0 1px 1px rgba(255,255,255,.8) inset, 0 1px 0 rgba(0,0,0,.3);
+        -webkit-box-shadow: 0 0 1px 1px rgba(255,255,255,.8) inset, 0 1px 0 rgba(0,0,0,.3);
+        box-shadow: 0 0 1px 1px rgba(255,255,255,.8) inset, 0 1px 0 rgba(0,0,0,.3);
+    }
+
+    .button:hover
+    {
+        background-color: #eee;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#ddd));
+        background-image: -webkit-linear-gradient(top, #fafafa, #ddd);
+        background-image: -moz-linear-gradient(top, #fafafa, #ddd);
+        background-image: -ms-linear-gradient(top, #fafafa, #ddd);
+        background-image: -o-linear-gradient(top, #fafafa, #ddd);
+        background-image: linear-gradient(top, #fafafa, #ddd);
+    }
+
+    .button:active
+    {
+        -moz-box-shadow: 0 0 4px 2px rgba(0,0,0,.3) inset;
+        -webkit-box-shadow: 0 0 4px 2px rgba(0,0,0,.3) inset;
+        box-shadow: 0 0 4px 2px rgba(0,0,0,.3) inset;
+        position: relative;
+        top: 1px;
+    }
+
+    .button:focus
+    {
+        outline: 0;
+        background: #fafafa;
+    }
+
+    .button:before
+    {
+        background: #ccc;
+        background: rgba(0,0,0,.1);
+        float: left;
+        width: 1em;
+        text-align: center;
+        font-size: 1.5em;
+        margin: 0 1em 0 -1em;
+        padding: 0 .2em;
+        -moz-box-shadow: 1px 0 0 rgba(0,0,0,.5), 2px 0 0 rgba(255,255,255,.5);
+        -webkit-box-shadow: 1px 0 0 rgba(0,0,0,.5), 2px 0 0 rgba(255,255,255,.5);
+        box-shadow: 1px 0 0 rgba(0,0,0,.5), 2px 0 0 rgba(255,255,255,.5);
+        -moz-border-radius: .15em 0 0 .15em;
+        -webkit-border-radius: .15em 0 0 .15em;
+        border-radius: .15em 0 0 .15em;
+        pointer-events: none;
+    }
+
+
+
+  </style>
+  <link rel="stylesheet" href="chosen/chosen.css" />
+</head>
+<body>
+  <h1>Search for trains</h1>
+  <form action="showtrains" method="get">
+  From<br/>
+  <select id="from" name="from" class="chzn-select">
+      <% @stations.each do |station| %>
+      <%= if (station == @default_from) then "<option selected>" else "<option>" end %>
+          <%= station.name %>
+      </option>
+      <% end %>
+  </select>
+      <br/>
+  To<br/>
+  <select id="to" name="to" class="chzn-select">
+      <% @stations.each do |station| %>
+      <%= if (station == @default_to) then "<option selected>" else "<option>" end %>
+          <%= station.name %>
+      </option>
+      <% end %>
+  </select>
+  <br/>
+  <input class="button" type="submit" value="Find">
+  </form>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+  <script src="chosen/chosen.jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript"> $(".chzn-select").chosen();</script>
+  </form>
+</body>
+</html>

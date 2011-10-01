@@ -9,9 +9,11 @@ require 'yaml'
 require 'json'
 
 require './parser.rb'
+require 'leg_info_finder'
 
 $config = YAML.load_file("vr.yml")
 vr_parser = VrParser.new
+leg_info_finder = LegInfoFinder.new
 
 get '/' do
   @routes = $config.keys
@@ -30,6 +32,20 @@ end
 
 get '/view' do
   erb :ajaxview
+end
+
+get '/find' do
+  @stations = leg_info_finder.trains.all_known_stations
+  @default_from = @stations.find { |s| s.name == "Kilo" }
+  @default_to = @stations.find { |s| s.name == "Helsinki" }
+  erb :find
+end
+
+get '/showtrains' do
+  @from = leg_info_finder.trains.find_station_by_name(params[:from])
+  @to = leg_info_finder.trains.find_station_by_name(params[:to])
+  @trains = leg_info_finder.realtime_trains_for_leg(@from, @to)
+  erb :showtrains
 end
 
 get '/trains/:route' do

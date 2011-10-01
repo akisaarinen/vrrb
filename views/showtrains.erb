@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Find trains</title>
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-startup-image" href="/splash.png" />
+  <link rel="apple-touch-icon" href="/icon.png" />
+  <style type="text/css">
+    body {
+      font-family: helvetica, arial;
+      font-size: 15px;
+      margin: 0px;
+      padding: 0px;
+    }
+    h1 {
+      padding-left: 5px;
+    }
+    h1,h2,h3 {
+      font-size: 16px;
+    }
+    h2 {
+      width: 100%;
+      background-color: #444;
+      color: white;
+      margin: 0px;
+    }
+    h2 .pad {
+      padding: 10px;
+    }
+    h2 a {
+      text-decoration:none;
+    }
+    h2 .est-time {
+      font-size: 24px;
+      background-color: #ccc;
+      color: black;
+      border-radius: 4px;
+      border: 1px solid #888;
+      padding: 4px;
+    }
+    h2 .dep-time {
+      font-size: 24px;
+      background-color: #eee;
+      color: black;
+      border-radius: 4px;
+      padding: 4px;
+    }
+    h2 .train {
+      font-size: 30px;
+      color: white;
+      padding-left: 10px;
+    }
+    h2 .separator {
+      font-size: 30px;
+      color: white;
+      font-weight: normal;
+    }
+    div.traininfo {
+      background-color: #eee;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    div.traininfo .late-info {
+      color: #f00;
+    }
+    p {
+      margin-left: 10px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+    .time-left {
+      font-size: 20px;
+      font-weight: bold;
+      color: #888;
+      width: 100%;
+      background-color: #ddd;
+      padding: 2px;
+    }
+    .time-left .minutes {
+      font-size: 24px;
+      color: #000;
+    }
+    .no-info, .update-info, .station-info {
+      color: #888;
+      font-weight: normal;
+    }
+    .departure-time, .last-location {
+      color: #000;
+      font-weight: bold;
+    }
+    ul.bottom-links {
+      border-bottom: 1px solid #888;
+      border-top: 1px solid #888;
+      background-color: #ddd;
+      margin: 0px;
+    }
+    ul.bottom-links a {
+      color: black;
+      font-size: 16px;
+    }
+    ul.bottom-links li {
+      color: black;
+      font-size: 16px;
+      padding: 2px;
+    }
+    div.reload {
+      float:right;
+      font-weight:bold;
+    }
+    div.reload a {
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <h1>Trains for <%=@from.name%> - <%=@to.name%></h1>
+  <% @trains.each do |train| %>
+  <p>
+      <%= train["name"] %> (<%= train["id"] %>)
+  </p>
+  <% end %>
+</body>
+</html>

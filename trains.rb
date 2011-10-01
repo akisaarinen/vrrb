@@ -11,10 +11,6 @@ class Station
   def measurable?
     @code != nil
   end
-
-  def ==(other)
-    other != nil && other.name == @name && other.stations == @stations
-  end
 end
 
 class Train
