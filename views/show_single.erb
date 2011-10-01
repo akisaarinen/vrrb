@@ -114,16 +114,10 @@
   </style>
 </head>
 <body>
-  <h1>
-    <% if @select_by_target %>
-      <%= @local_station %> - <%= @target_station %>
-    <% else %>
-      <%= @source_station %> - <%= @local_station %>
-    <% end %>
-    (<%= @trains.size %> kpl)
+  <h1><%= @from.name %> - <%= @to.name %>
     <div class="reload"><a href="#" onclick="location.reload()">[Refresh]</a>
   </h1>
-  <% @trains.each do |name, url, update_info, target, last_station, kilo|
+  <% @trains.each do |name, url, update_info, target, last_station, from_station|
         info_available = last_station['dep_actual'] != ""
         late_minutes = 0
         if last_station['dep_actual'] != "" && last_station['dep_actual'] != last_station['dep_sched']
@@ -131,7 +125,7 @@
           a_time = Time.parse(last_station['dep_actual'])
           late_minutes = (a_time - s_time).to_i / 60
         end
-        dep_sched = Time.parse(kilo['dep_sched'])
+        dep_sched = Time.parse(from_station['dep_sched'])
         est_time = Time.at(dep_sched.to_i + late_minutes * 60)
         now = Time.new
         time_left = (est_time - now).to_i / 60
@@ -139,7 +133,7 @@
     <h2>
       <div class="pad">
       <a href="<%= url %>">
-      <span class="dep-time"><%= kilo['dep_sched'] %></span>
+      <span class="dep-time"><%= from_station['dep_sched'] %></span>
       <% if late_minutes != 0 %>
         <span class="est-time"><%= est_time.strftime("%H:%M") %></span>
       <% end %>
@@ -172,7 +166,7 @@
     </div>
   <% end %> 
   <ul class="bottom-links">
-    <li><a href="/">Takaisin listaukseen</a></li>
+    <li><a href="/">Hae muita reittejä</a></li>
     <li><a href="http://service.vr.fi/juku/haku.action?lang=fi&junalaji=ll">Suorat haut VR:lt&auml</a></li>
   </ul>
 </body>
