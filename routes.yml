@@ -1,0 +1,102 @@
+measured_stations:
+  - { code: EPO, name: Espoo }
+  - { code: HKI, name: Helsinki }
+  - { code: HPL, name: Huopalahti }
+  - { code: HL, name: Hämeenlinna }
+  - { code: KR, name: Karjaa }
+  - { code: KLH, name: Kauklahti }
+  - { code: KE, name: Kerava }
+  - { code: KKN, name: Kirkkonummi }
+  - { code: KV, name: Kouvola }
+  - { code: LH, name: Lahti }
+  - { code: LPV, name: Leppävaara }
+  - { code: MLÄ, name: Mäntsälä }
+  - { code: OLK, name: Oulunkylä }
+  - { code: RI, name: Riihimäki }
+  - { code: SAU, name: Saunakallio }
+  - { code: TPE, name: Tampere }
+  - { code: TKL, name: Tikkurila }
+  - { code: TL, name: Toijala }
+  - { code: VKS, name: Vantaankoski }
+
+trains:
+  - name: Y
+    stations:
+    - HKI
+    - Pasila
+    - LPV
+    - Masala
+    - KKN
+    - Siuntio
+    - Inkoo
+    - KR
+  - name: E
+    stations:
+    - HKI
+    - Pasila
+    - HPL
+    - LPV
+    - Kilo
+    - Kera
+    - Kauniainen
+    - Koivuhovi
+    - Tuomarila
+    - EPO
+    - KLH
+  - name: S
+    stations:
+    - HKI
+    - Pasila
+    - HPL
+    - LPV
+    - Kilo
+    - Kera
+    - Kauniainen
+    - Koivuhovi
+    - Tuomarila
+    - EPO
+    - KLH
+    - Masala
+    - KKN
+  - name: U
+    stations:
+    - HKI
+    - Pasila
+    - HPL
+    - LPV
+    - Kilo
+    - Kera
+    - Kauniainen
+    - Koivuhovi
+    - Tuomarila
+    - EPO
+    - KLH
+    - Mankki
+    - Luoma
+    - Masala
+    - Jorvas
+    - Tolsa
+    - KKN
+  - name: L
+    stations:
+    - HKI
+    - Pasila
+    - Ilmala
+    - HPL
+    - Valimo
+    - Pitäjänmäki
+    - Mäkkylä
+    - LPV
+    - Kilo
+    - Kera
+    - Kauniainen
+    - Koivuhovi
+    - Tuomarila
+    - EPO
+    - KLH
+    - Mankki
+    - Luoma
+    - Masala
+    - Jorvas
+    - Tolsa
+    - KKN
