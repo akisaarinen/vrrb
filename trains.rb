@@ -53,7 +53,6 @@ class Trains
             train.stations.reverse
           end
 
-      p "#{train.name} stations: #{sorted_stations.map{|s|s.name}}"
       from_index = sorted_stations.index(from)
       measurable_before_from = sorted_stations.
           select { |s| s.measurable? }.
