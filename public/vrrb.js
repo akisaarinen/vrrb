@@ -122,17 +122,21 @@ function ui_onSearchClick() {
 
 $('#from').change(function() {
     if (fromFieldValue() != "" && toFieldValue() != "") {
+        location.hash = fromFieldValue() + "#" + toFieldValue()
         ui_onSearchClick()
     } else if (fromFieldValue() != "") {
         $("#to_chzn").show()
+        location.hash = fromFieldValue()
         ui_showSelectStillTo()
     } else {
         $("#to_chzn").hide()
+        location.hash = ""
         ui_showSelectFromFirst()
     }
 })
 $('#to').change(function() {
     if (fromFieldValue() != "" && toFieldValue() != "") {
+        location.hash = fromFieldValue() + "#" + toFieldValue()
         ui_onSearchClick()
     }
 })
@@ -165,6 +169,15 @@ $(document).ready(function() {
             $("#to").append(newOption)
         })
         $("#search").show()
+
+        var hashParts = location.hash.split("#")
+        console.log(hashParts)
+        if (hashParts.length > 1 && hashParts[1] != "") {
+            $("#from").val(hashParts[1])
+        }
+        if (hashParts.length > 2 && hashParts[2] != "") {
+            $("#from").val(hashParts[2])
+        }
         $(".chzn-select").chosen()
         $("#from").trigger("change")
     })
