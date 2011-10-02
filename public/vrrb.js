@@ -85,7 +85,7 @@ function ui_addTrainToSearchResults(train) {
     $("#train-list").append(
         "<li class=\"train_" + train.id + "\">" +
             "<div class=\"name-wrapper\"><div class=\"name\">" + train.name + "</div></div>"+
-            "<div class=\"loading-details\"><img src=\"/ajax-loader.gif\"> haetaan lis&auml;tietoja</div>" +
+            "<div class=\"loading-details\"><img src=\"ajax-loader.gif\"> Haetaan lis&auml;tietoja</div>" +
         "</li>")
 }
 
