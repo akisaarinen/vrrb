@@ -13,7 +13,7 @@ class RealTimeStation < Station
     @scheduled_arrival = scheduled_arrival
     @actual_arrival = actual_arrival
     @scheduled_departure = scheduled_departure
-    @actual_departure = actual_arrival
+    @actual_departure = actual_departure
   end
 
   def to_json(*a)
@@ -132,8 +132,6 @@ class VrParser
     header_regex = /\s+([a-zA-Z])\s*:\s*([\S]+)[^-]+-[\s]+([\S]+)/.match(train_header_info)
 
     train_name = header_regex[1]
-    train_source = header_regex[2]
-    train_target = header_regex[3]
 
     stations = []
     update_info = doc.css('table.header span.middle').first.content
