@@ -176,7 +176,7 @@ $(document).ready(function() {
             $("#from").val(hashParts[1])
         }
         if (hashParts.length > 2 && hashParts[2] != "") {
-            $("#from").val(hashParts[2])
+            $("#to").val(hashParts[2])
         }
         $(".chzn-select").chosen()
         $("#from").trigger("change")
