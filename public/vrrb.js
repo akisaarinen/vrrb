@@ -49,6 +49,17 @@ function train_lastKnownStation(train) {
 function ui_showLoading() {
     $("#search-results").hide()
     $("#loading").show()
+    $("#select-from-first").hide()
+    $("#select-still-to").hide()
+}
+
+function ui_showSelectFromFirst() {
+    $("#select-from-first").show()
+}
+
+function ui_showSelectStillTo() {
+    $("#select-from-first").hide()
+    $("#select-still-to").show()
 }
 
 function ui_hideLoading() {
@@ -64,6 +75,8 @@ function ui_clearSearchResults() {
 }
 
 function ui_showSearchResults(realTimeResultCount) {
+    $("#select-from-first").hide()
+    $("#select-still-to").hide()
     $("#realtime-result-count").html(realTimeResultCount)
     $("#search-results").show()
 }
@@ -72,7 +85,7 @@ function ui_addTrainToSearchResults(train) {
     $("#train-list").append(
         "<li class=\"train_" + train.id + "\">" +
             "<div class=\"name-wrapper\"><div class=\"name\">" + train.name + "</div></div>"+
-            "<div class=\"loading-details\">(haetaan tarkempia tietoja)</div>" +
+            "<div class=\"loading-details\"><img src=\"/ajax-loader.gif\"> haetaan lis&auml;tietoja</div>" +
         "</li>")
 }
 
@@ -107,29 +120,23 @@ function ui_onSearchClick() {
     }
 }
 
-$(document).ready(function() {
-    api_stations(function(stations) {
-        _(stations).each(function (s) {
-            var newOption = "<option>"+s.name+"</option>"
-            $("#from").append(newOption)
-            $("#to").append(newOption)
-        })
-        $("#search").show()
-        $("#from").val("Kilo")
-        $("#to").val("Helsinki")
-        $(".chzn-select").chosen()
-        $("#from").trigger("change")
-    })
-})
-
-
 $('#from').change(function() {
-    if (fromFieldValue() != "") {
+    if (fromFieldValue() != "" && toFieldValue() != "") {
+        ui_onSearchClick()
+    } else if (fromFieldValue() != "") {
         $("#to_chzn").show()
+        ui_showSelectStillTo()
     } else {
         $("#to_chzn").hide()
+        ui_showSelectFromFirst()
     }
 })
+$('#to').change(function() {
+    if (fromFieldValue() != "" && toFieldValue() != "") {
+        ui_onSearchClick()
+    }
+})
+
 
 function emptyIfUndefined(text) {
     if (typeof(text) == "undefined") {
@@ -148,6 +155,20 @@ function toFieldValue() {
     var text = $("#to option:selected").text()
     return emptyIfUndefined(text)
 }
+
+
+$(document).ready(function() {
+    api_stations(function(stations) {
+        _(stations).each(function (s) {
+            var newOption = "<option>"+s.name+"</option>"
+            $("#from").append(newOption)
+            $("#to").append(newOption)
+        })
+        $("#search").show()
+        $(".chzn-select").chosen()
+        $("#from").trigger("change")
+    })
+})
 
 function doTest() {
     var testTrains = [

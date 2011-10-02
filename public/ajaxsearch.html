@@ -19,6 +19,17 @@
         margin: 10px;
     }
 
+    .info-box {
+        margin: 10px;
+        color: #5897fb;
+        font-size: 16px;
+    }
+
+    .info-icon {
+        height: 16px;
+        width: 16px;
+    }
+
     #search-results {
         margin: 10px;
     }
@@ -89,19 +100,29 @@
 
   <div id="search" style="display:none">
       <form>
-          <select name="from" id="from" class="chzn-select">
+          <select name="from" id="from" class="chzn-select" data-placeholder="Valitse lähtöasema">
               <option selected></option>
           </select>
-          <select name="to" id="to" class="chzn-select">
+          <select name="to" id="to" class="chzn-select" data-placeholder="Valitse kohdeasema">
               <option selected></option>
           </select>
-          <input type="submit" value="Hae" class="button" onclick="ui_onSearchClick(); return false;">
       </form>
   </div>
 
   <div id="loading" style="display:none">
       <img src="/ajax-loader.gif">
       Haetaan...
+  </div>
+
+  <div id="select-from-first" class="info-box" style="display:none">
+      <img src="info.png" class="info-icon">
+      Aloita valitsemalla lähtöasema.
+  </div>
+
+
+  <div id="select-still-to" class="info-box" style="display:none">
+      <img src="info.png" class="info-icon">
+      Valitse vielä kohdeasema.
   </div>
 
   <div id="search-results" style="display:none">
