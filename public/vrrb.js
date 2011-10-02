@@ -10,19 +10,26 @@ function api_train_details(train, callback) {
     $.get("/api/train/" + train.id + ".json", callback)
 }
 
-function handleSingleTrainResult(train) {
-    console.log("Handling results for " + train.id)
-    ui_addTrainDetailsToSearchResults(train)
+function handleSingleTrainResult(from, to, train) {
+    console.log("Handling results for " + train.id + "(from: "+ from + ", to: " + to + ")")
+    ui_addTrainDetailsToSearchResults(from, to, train)
 }
 
-function handleTrainSearch(trains) {
+function handleTrainSearch(from, to, trains) {
     ui_hideLoading()
     ui_clearSearchResults()
     _(trains).each(function(train) {
         ui_addTrainToSearchResults(train)
-        api_train_details(train, handleSingleTrainResult)
+        api_train_details(train, function(train) { handleSingleTrainResult(from, to, train) })
     })
     ui_showSearchResults(trains.length)
+}
+
+function train_scheduledTimeAtStation(train, stationName) {
+    return _(train.stations)
+        .detect(function(s) {
+            return s.name == stationName
+        })
 }
 
 function train_lastKnownStation(train) {
@@ -32,7 +39,6 @@ function train_lastKnownStation(train) {
             return s.actual_departure != null
         })
         .value()
-    console.log(lastKnownStation)
     if (typeof(lastKnownStation) != "undefined") {
         return lastKnownStation
     } else {
@@ -65,18 +71,29 @@ function ui_showSearchResults(realTimeResultCount) {
 function ui_addTrainToSearchResults(train) {
     $("#train-list").append(
         "<li class=\"train_" + train.id + "\">" +
-            "<div class=\"name\">" + train.name + "</div>"+
+            "<div class=\"name-wrapper\"><div class=\"name\">" + train.name + "</div></div>"+
             "<div class=\"loading-details\">(haetaan tarkempia tietoja)</div>" +
         "</li>")
 }
 
-function ui_addTrainDetailsToSearchResults(train) {
+function ui_addTrainDetailsToSearchResults(from, to, train) {
     ui_hideLoadingDetailsForTrain(train.id)
     var elem = $("#train-list .train_" + train.id)
+
+    elem.append("<div class=\"route\">" +
+        _(train.stations).first().name + " - " + _(train.stations).last().name +
+        "</div>")
+
+    var fromStation = train_scheduledTimeAtStation(train, from)
+    var toStation = train_scheduledTimeAtStation(train, to)
+    elem.append("<div class=\"sched-time\">Klo " +
+        fromStation.scheduled_departure + ", perill&auml; " +
+        toStation.scheduled_arrival + "</div>")
+
     var lastKnownStation = train_lastKnownStation(train)
     var text = "Ei tietoja"
     if (lastKnownStation) {
-        text = "Viimeksi @" + lastKnownStation.name + " kello " + lastKnownStation.actual_departure
+        text = "Viimeksi @" + lastKnownStation.name + " klo " + lastKnownStation.actual_departure
     }
     elem.append("<div class=\"last-known-station\">" + text + "</div>")
 }
@@ -86,7 +103,7 @@ function ui_onSearchClick() {
     var to = $('#to option:selected').text()
     if (from != "" && to != "") {
         ui_showLoading()
-        api_trains(from, to, handleTrainSearch)
+        api_trains(from, to, function(trains) { handleTrainSearch(from, to, trains) })
     }
 }
 
@@ -140,10 +157,12 @@ function doTest() {
         {"update_time":"2.10.2011, klo 21:16.","stations":[{"actual_departure":"21:07","scheduled_arrival":null,"actual_arrival":null,"name":"Helsinki","code":null,"scheduled_departure":"21:07"},{"actual_departure":null,"scheduled_arrival":"21:12","actual_arrival":null,"name":"Pasila","code":null,"scheduled_departure":"21:12"},{"actual_departure":"21:15","scheduled_arrival":"21:15","actual_arrival":"21:15","name":"Huopalahti","code":null,"scheduled_departure":"21:15"},{"actual_departure":null,"scheduled_arrival":"21:19","actual_arrival":null,"name":"Leppävaara","code":null,"scheduled_departure":"21:19"},{"actual_departure":null,"scheduled_arrival":"21:21","actual_arrival":null,"name":"Kilo","code":null,"scheduled_departure":"21:21"},{"actual_departure":null,"scheduled_arrival":"21:23","actual_arrival":null,"name":"Kera","code":null,"scheduled_departure":"21:23"},{"actual_departure":null,"scheduled_arrival":"21:26","actual_arrival":null,"name":"Kauniainen","code":null,"scheduled_departure":"21:26"},{"actual_departure":null,"scheduled_arrival":"21:28","actual_arrival":null,"name":"Koivuhovi","code":null,"scheduled_departure":"21:28"},{"actual_departure":null,"scheduled_arrival":"21:30","actual_arrival":null,"name":"Tuomarila","code":null,"scheduled_departure":"21:30"},{"actual_departure":null,"scheduled_arrival":"21:32","actual_arrival":null,"name":"Espoo","code":null,"scheduled_departure":"21:32"},{"actual_departure":null,"scheduled_arrival":"21:35","actual_arrival":null,"name":"Kauklahti","code":null,"scheduled_departure":"21:35"},{"actual_departure":null,"scheduled_arrival":"21:40","actual_arrival":null,"name":"Masala","code":null,"scheduled_departure":"21:40"},{"actual_departure":null,"scheduled_arrival":"21:47","actual_arrival":null,"name":"Kirkkonummi","code":null,"scheduled_departure":null}],"name":"S","url":"http://ext-service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8573","id":"8573"},
         {"update_time":"2.10.2011, klo 0:03.","stations":[{"actual_departure":null,"scheduled_arrival":null,"actual_arrival":null,"name":"Vantaankoski","code":null,"scheduled_departure":"21:41"},{"actual_departure":null,"scheduled_arrival":"21:42","actual_arrival":null,"name":"Martinlaakso","code":null,"scheduled_departure":"21:42"},{"actual_departure":null,"scheduled_arrival":"21:44","actual_arrival":null,"name":"Louhela","code":null,"scheduled_departure":"21:44"},{"actual_departure":null,"scheduled_arrival":"21:46","actual_arrival":null,"name":"Myyrmäki","code":null,"scheduled_departure":"21:46"},{"actual_departure":null,"scheduled_arrival":"21:48","actual_arrival":null,"name":"Malminkartano","code":null,"scheduled_departure":"21:48"},{"actual_departure":null,"scheduled_arrival":"21:50","actual_arrival":null,"name":"Kannelmäki","code":null,"scheduled_departure":"21:50"},{"actual_departure":null,"scheduled_arrival":"21:52","actual_arrival":null,"name":"Pohjois-Haaga","code":null,"scheduled_departure":"21:52"},{"actual_departure":null,"scheduled_arrival":"21:54","actual_arrival":null,"name":"Huopalahti","code":null,"scheduled_departure":"21:54"},{"actual_departure":null,"scheduled_arrival":"21:56","actual_arrival":null,"name":"Ilmala","code":null,"scheduled_departure":"21:56"},{"actual_departure":null,"scheduled_arrival":"21:58","actual_arrival":null,"name":"Pasila","code":null,"scheduled_departure":"21:58"},{"actual_departure":null,"scheduled_arrival":"22:03","actual_arrival":null,"name":"Helsinki","code":null,"scheduled_departure":null}],"name":"M","url":"http://ext-service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8986","id":"8986"}
         ]
+    var from = "Huopalahti"
+    var to = "Helsinki"
     ui_showSearchResults(testTrains.length)
     _(testTrains).each(function(t) {
         ui_addTrainToSearchResults(t)
-        ui_addTrainDetailsToSearchResults(t)
+        ui_addTrainDetailsToSearchResults(from, to, t)
     })
 }
 
