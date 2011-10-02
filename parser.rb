@@ -165,10 +165,10 @@ class VrParser
     station_objects = stations.map { |s|
       RealTimeStation.new(s[:name],
                           s[:code],
-                          s[:scheduled_arrival],
-                          s[:actual_arrival],
-                          s[:scheduled_departure],
-                          s[:actual_departure])
+                          empty_to_nil(s[:scheduled_arrival]),
+                          empty_to_nil(s[:actual_arrival]),
+                          empty_to_nil(s[:scheduled_departure]),
+                          empty_to_nil(s[:actual_departure]))
     }
 
     RealTimeTrain.new(train_id,
@@ -188,6 +188,14 @@ private
 
   def find_id(train_url)
     /junanro=([0-9]+)/.match(train_url)[1]
+  end
+
+  def empty_to_nil(s)
+    if s == ""
+      nil
+    else
+      s
+    end
   end
 
 end

@@ -15,11 +15,11 @@
   <% @trains.each do |t|
         last_station = t.last_confirmed_departure_station
         from_station = t.stations.find {|s| s.name == @from.name}
-        info_available = last_station.actual_departure != ""
+        info_available = last_station.actual_departure != nil
         late_minutes = 0
 
         if info_available &&
-                last_station.actual_departure != last_station.scheduled_departure
+          last_station.actual_departure != last_station.scheduled_departure
           s_time = Time.parse(last_station.scheduled_departure)
           a_time = Time.parse(last_station.actual_departure)
           late_minutes = (a_time - s_time).to_i / 60
