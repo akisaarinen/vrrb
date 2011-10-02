@@ -26,6 +26,14 @@ class RealTimeStation < Station
         :actual_departure => @actual_departure
     }.to_json(*a)
   end
+
+  def ==(other)
+    super.==(other) &&
+        other.scheduled_arrival == @scheduled_arrival &&
+        other.actual_arrival == @actual_arrival &&
+        other.scheduled_departure == @scheduled_departure &&
+        other.actual_departure == @actual_departure
+  end
 end
 
 class RealTimeTrain < Train
@@ -60,6 +68,13 @@ class RealTimeTrain < Train
         :stations => @stations,
         :update_time => @update_time
     }.to_json(a)
+  end
+
+  def ==(other)
+    super.==(other) &&
+        other.id == @id &&
+        other.url == @url &&
+        other.update_time == @update_time
   end
 end
 
