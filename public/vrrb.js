@@ -119,8 +119,6 @@ $(document).ready(function() {
         $("#to").val("Helsinki")
         $(".chzn-select").chosen()
         $("#from").trigger("change")
-
-        doTest()
     })
 })
 
@@ -165,4 +163,6 @@ function doTest() {
         ui_addTrainDetailsToSearchResults(from, to, t)
     })
 }
+
+$(document).ready(function() { if (location.hash == "#test") { doTest() }})
 
