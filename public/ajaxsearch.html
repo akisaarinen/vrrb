@@ -5,37 +5,46 @@
   <style type="text/css">
     body {
       font-family: Helvetica, Arial;
-      font-size: 18px;
-    }
-    p {
-      margin-left: 10px;
-      margin-top: 0px;
-      margin-bottom: 0px;
-    }
-    div {
-      margin-top: 10px;
+      font-size: 12px;
     }
     a {
       font-weight: normal;
       color: #888;
     }
-
+    select {
+        width: 300px;
+    }
     div.loading {
         background-image: url("/ajax-loader.gif");
     }
 
   </style>
+  <link rel="stylesheet" href="chosen/chosen.css" />
+  <link rel="stylesheet" href="vrrb.css" />
 </head>
 <body>
   <h1>
-    Juna-aikataulut
+    AjaxVrrb
   </h1>
 
+  <div id="search" style="display:none">
+      <form>
+          <select name="from" id="from" class="chzn-select">
+              <option selected></option>
+          </select>
+          <select name="to" id="to" class="chzn-select">
+              <option selected></option>
+          </select>
+          <input type="submit" value="Hae" class="button" onclick="searchClick(); return false;">
+      </form>
+  </div>
 
+  <!--
   <div id="loading">
       <img src="/ajax-loader.gif">
       Haetaan...
   </div>
+  -->
 
   <div id="trainList" style="display:none">
       <div><span class="trainCount"></span> juna(a)</div>
@@ -49,13 +58,9 @@
     <a href="http://service.vr.fi/juku/haku.action?lang=fi&junalaji=ll">Suorat haut VR:lt&auml</a>
   </div>
 
-
-
-
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="underscore-min.js"></script>
+  <script type="text/javascript" src="chosen/chosen.jquery.min.js"></script>
   <script type="text/javascript" src="vrrb.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function() { fetchTrainList("EPO") })
-  </script>
 </body>
 </html>

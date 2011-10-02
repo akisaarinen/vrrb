@@ -1,4 +1,8 @@
- function fetchTrainList(station) {
+function fetchStations(callback) {
+    $.get("/api/stations.json", callback)
+}
+
+function fetchTrainList(station) {
     function handleSingleTrain(t, status) {
         var selector = '#trainList .train_' + t.id
         $(selector + ' img.loader').hide();
@@ -21,4 +25,56 @@
     }
 
     $.get("/api/station/" + station + ".json", handleTrainList)
+}
+
+function searchClick() {
+    var from = $('#from option:selected').text()
+    var to = $('#to option:selected').text()
+    if (from != "" && to != "") {
+        doAjaxSearch(from, to)
+    }
+}
+
+function doAjaxSearch(from, to) {
+    alert(from + to)
+}
+
+$(document).ready(function() {
+    fetchStations(function(data) {
+        var raw_stations = JSON.parse(data)
+        _(raw_stations).each(function (s) {
+            var newOption = "<option>"+s.name+"</option>"
+            $("#from").append(newOption)
+            $("#to").append(newOption)
+        })
+        $("#search").show()
+        $(".chzn-select").chosen()
+        $("#from").trigger("change")
+    })
+})
+
+
+$('#from').change(function() {
+    if (fromFieldValue() != "") {
+        $("#to_chzn").show()
+    } else {
+        $("#to_chzn").hide()
+    }
+})
+
+function emptyIfUndefined(text) {
+    if (typeof(text) == "undefined") {
+        return ""
+    } else {
+        return text
+    }
+}
+
+function fromFieldValue() {
+    var text = $("#from option:selected").text()
+    return emptyIfUndefined(text)
+}
+function toFieldValue() {
+    var text = $("#to option:selected").text()
+    return emptyIfUndefined(text)
 }

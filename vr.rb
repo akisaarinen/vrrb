@@ -13,9 +13,14 @@ require './leg_info_finder'
 
 vr_parser = VrParser.new
 leg_info_finder = LegInfoFinder.new
+trains = leg_info_finder.trains
 
 get '/' do
   redirect '/find'
+end
+
+get '/api/stations.json' do
+  trains.all_known_stations.to_json
 end
 
 get '/api/station/:station.json' do
