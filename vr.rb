@@ -33,6 +33,13 @@ get '/api/train/:id.json' do
   vr_parser.fetch_single_train(params[:id]).to_json
 end
 
+get '/api/trains/search.json' do
+  headers 'Content-Type' => "application/json; charset=utf-8"
+  from = leg_info_finder.trains.find_station_by_name(params[:from])
+  to = leg_info_finder.trains.find_station_by_name(params[:to])
+  leg_info_finder.realtime_trains_for_leg(from, to).to_json
+end
+
 get '/view' do
   erb :ajaxview
 end

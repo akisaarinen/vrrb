@@ -14,8 +14,13 @@
     select {
         width: 300px;
     }
-    div.loading {
-        background-image: url("/ajax-loader.gif");
+
+    #loading {
+        margin: 10px;
+    }
+
+    #search-results {
+        margin: 10px;
     }
 
   </style>
@@ -39,20 +44,17 @@
       </form>
   </div>
 
-  <!--
-  <div id="loading">
+  <div id="loading" style="display:none">
       <img src="/ajax-loader.gif">
       Haetaan...
   </div>
-  -->
 
-  <div id="trainList" style="display:none">
-      <div><span class="trainCount"></span> juna(a)</div>
-      <ul class="trains">
+  <div id="search-results" style="display:none">
+      <div><span id="realtime-result-count">?</span> junan reaaliaikatiedot saatavilla</div>
+      <ul id="train-list">
       </ul>
       <div class="jsonContent" style="display:none"/>
   </div>
-
 
   <div class="service-info">
     <a href="http://service.vr.fi/juku/haku.action?lang=fi&junalaji=ll">Suorat haut VR:lt&auml</a>
