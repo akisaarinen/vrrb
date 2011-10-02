@@ -110,3 +110,15 @@ trains:
     - Pitäjänmäki
     - Mäkkylä
     - LPV
+  - name: M
+    stations:
+    - HKI
+    - Pasila
+    - HPL
+    - Pohjois-Haaga
+    - Kannelmäki
+    - Malminkartano
+    - Myyrmäki
+    - Louhela
+    - Martinlaakso
+    - VKS
