@@ -121,9 +121,8 @@ function ui_addTrainDetailsToSearchResults(train) {
 }
 
 $(document).ready(function() {
-    fetchStations(function(data) {
-        var raw_stations = JSON.parse(data)
-        _(raw_stations).each(function (s) {
+    fetchStations(function(stations) {
+        _(stations).each(function (s) {
             var newOption = "<option>"+s.name+"</option>"
             $("#from").append(newOption)
             $("#to").append(newOption)

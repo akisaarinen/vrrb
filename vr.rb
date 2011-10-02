@@ -20,6 +20,7 @@ get '/' do
 end
 
 get '/api/stations.json' do
+  headers 'Content-Type' => "application/json; charset=utf-8"
   trains.all_known_stations.to_json
 end
 
