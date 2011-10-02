@@ -6,20 +6,20 @@ describe LegInfoFinder, "when loaded" do
   trains = lif.trains
 
   it "loads some real-time data for Leppävaara-Huopalahti" do
-    hki = lif.trains.find_station_by_name("Leppävaara")
-    lpv = lif.trains.find_station_by_name("Huopalahti")
+    hki = trains.find_station_by_name("Leppävaara")
+    lpv = trains.find_station_by_name("Huopalahti")
     rtt = lif.realtime_trains_for_leg(hki,lpv)
     rtt.each { |t|
-      p "#{t["name"]} (#{t["id"]}) to '#{t["target"]}'"
+      p "#{t.name} (#{t.id}) to '#{t.target.name}'"
     }
   end
 
   it "loads some real-time data for Huopalahti-Leppävaara" do
-    hki = lif.trains.find_station_by_name("Huopalahti")
-    lpv = lif.trains.find_station_by_name("Leppävaara")
+    hki = trains.find_station_by_name("Huopalahti")
+    lpv = trains.find_station_by_name("Leppävaara")
     rtt = lif.realtime_trains_for_leg(hki,lpv)
     rtt.each { |t|
-      p "#{t["name"]} (#{t["id"]}) to '#{t["target"]}'"
+      p "#{t.name} (#{t.id}) to '#{t.target.name}'"
     }
   end
 end

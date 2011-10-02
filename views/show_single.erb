@@ -12,27 +12,32 @@
   <h1><%= @from.name %> - <%= @to.name %>
     <div class="reload"><a href="#" onclick="location.reload()">[Refresh]</a>
   </h1>
-  <% @trains.each do |name, url, update_info, target, last_station, from_station|
-        info_available = last_station['dep_actual'] != ""
+  <% @trains.each do |t|
+        last_station = t.last_confirmed_departure_station
+        from_station = t.stations.find {|s| s.name == @from.name}
+        info_available = last_station.actual_departure != ""
         late_minutes = 0
-        if last_station['dep_actual'] != "" && last_station['dep_actual'] != last_station['dep_sched']
-          s_time = Time.parse(last_station['dep_sched'])
-          a_time = Time.parse(last_station['dep_actual'])
+
+        if info_available &&
+                last_station.actual_departure != last_station.scheduled_departure
+          s_time = Time.parse(last_station.scheduled_departure)
+          a_time = Time.parse(last_station.actual_departure)
           late_minutes = (a_time - s_time).to_i / 60
         end
-        dep_sched = Time.parse(from_station['dep_sched'])
+
+        dep_sched = Time.parse(from_station.scheduled_departure)
         est_time = Time.at(dep_sched.to_i + late_minutes * 60)
         now = Time.new
         time_left = (est_time - now).to_i / 60
   %>
     <h2>
       <div class="pad">
-      <a href="<%= url %>">
-      <span class="dep-time"><%= from_station['dep_sched'] %></span>
+      <a href="<%= t.url %>">
+      <span class="dep-time"><%= from_station.scheduled_departure %></span>
       <% if late_minutes != 0 %>
         <span class="est-time"><%= est_time.strftime("%H:%M") %></span>
       <% end %>
-      <span class="train"><%= name %></span>
+      <span class="train"><%= t.name %></span>
       </a>
     </div>
     </h2>
@@ -43,15 +48,15 @@
       <% if info_available %>
           <p class="station-info">
             Sijainti 
-            <span class="last-location"><%= last_station['name'] %></span>
+            <span class="last-location"><%= last_station.name %></span>
             kello
             <span class="departure-time">
-              <%= last_station['dep_actual'] %>
+              <%= last_station.actual_departure %>
             </span>
           </p>
           <p class="update-info">
-            M&auml;&auml;r&auml;np&auml;&auml;: <%= target %><br>
-            P&auml;ivitetty <%= update_info %>
+            M&auml;&auml;r&auml;np&auml;&auml;: <%= t.target %><br>
+            P&auml;ivitetty <%= t.update_time %>
           </p>
       <% else %>
           <p class="no-info">

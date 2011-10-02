@@ -44,19 +44,8 @@ get '/showtrains' do
   @to = leg_info_finder.trains.find_station_by_name(params[:to])
 
   realtime_train_list = leg_info_finder.realtime_trains_for_leg(@from, @to)
-  realtime_train_details = realtime_train_list.map { |t|
-    vr_parser.fetch_single_train(t["id"])
-  }
-
-  @trains = realtime_train_details.map { |t|
-    name = t["name"]
-    url = t["url"]
-    update_info = t["update_time"]
-    target = t["target"]
-    stations = t["stations"]
-    last_station = stations.reverse.find { |s| s['dep_actual'] != nil && s["dep_actual"] != "" } || stations.first
-    from_station = stations.find { |s| s['name'] == @from.name }
-    [name, url, update_info, target, last_station, from_station]
+  @trains = realtime_train_list.map { |t|
+    vr_parser.fetch_single_train(t.id)
   }
   erb :show_single
 end

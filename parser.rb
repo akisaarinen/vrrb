@@ -4,6 +4,43 @@ require 'net/http'
 require 'nokogiri'
 
 require './html_loader.rb'
+require './trains.rb'
+
+class RealTimeStation < Station
+  attr_reader :scheduled_arrival, :actual_arrival, :scheduled_departure, :actual_departure
+  def initialize(name, code, scheduled_arrival, actual_arrival, scheduled_departure, actual_departure)
+    super(name, code)
+    @scheduled_arrival = scheduled_arrival
+    @actual_arrival = actual_arrival
+    @scheduled_departure = scheduled_departure
+    @actual_departure = actual_arrival
+  end
+end
+
+class RealTimeTrain < Train
+  attr_reader :id, :url, :update_time
+  def initialize(id, url, name, stations, update_time)
+    super(name, stations)
+    @id = id
+    @url = url
+    @update_time = update_time
+  end
+
+  def source
+    @stations.first
+  end
+
+  def target
+    @stations.last
+  end
+
+  def last_confirmed_departure_station
+    @stations.reverse.find {|s|
+      s.actual_departure != nil &&
+      s.actual_departure != ""
+    } || @stations.first
+  end
+end
 
 class VrParser
   attr_accessor :html_loader
@@ -30,13 +67,13 @@ class VrParser
           target = row.css('td')[4].content
           train_url = link['href']
           train_id = find_id(train_url)
-          {
-            'name' => link.content,
-            'id' => train_id,
-            'url' => train_url,
-            'target' => target
-          }
-        else 
+          train_name = link.content
+          RealTimeTrain.new(train_id,
+            train_url,
+            train_name,
+            [Station.new(target, nil)],
+            nil)
+        else
           nil
         end
       }.select {|r| r != nil }
@@ -65,37 +102,44 @@ class VrParser
     stations = []
     update_info = doc.css('table.header span.middle').first.content
     update_time = /viimeksi(.*)Osasta/m.match(update_info)[1].strip
-    puts "info: '#{update_info}', time: '#{update_time}'"
+
+    #puts "info: '#{update_info}', time: '#{update_time}'"
+
     doc.css('table.kulkutiedot tr').each { |tr|
-      station = tr.css('td.first_border a').first || tr.css('td.first_border span').first
-      elems = tr.css('td').map{|e| e.content.strip}
-      if station
+      station_node = tr.css('td.first_border a').first || tr.css('td.first_border span').first
+      sched_elems = tr.css('td').map{|e| e.content.strip}
+      if station_node
         stations.push({
-          'name' => station.content.strip,
-          'arr_sched' => elems[1].sub(/[^0-9:]+/, ""),
-          'arr_actual' => elems[2].sub(/[^0-9:]+/, "")
+          :name => station_node.content.strip,
+          :scheduled_arrival => sched_elems[1].sub(/[^0-9:]+/, ""),
+          :actual_arrival => sched_elems[2].sub(/[^0-9:]+/, "")
         })
         # For first station, all data in first row
         if stations.length == 1
-          stations.last['dep_sched'] = elems[4].sub(/[^0-9:]+/, "")
-          stations.last['dep_actual'] = elems[5].sub(/[^0-9:]+/, "")
+          stations.last[:scheduled_departure] = sched_elems[4].sub(/[^0-9:]+/, "")
+          stations.last[:actual_departure] = sched_elems[5].sub(/[^0-9:]+/, "")
         end
       # For other stations, data is in next row without station
       elsif stations.length > 0
-        stations.last['dep_sched'] = elems[4].sub(/[^0-9:]+/, "")
-        stations.last['dep_actual'] = elems[5].sub(/[^0-9:]+/, "")
-
+        stations.last[:scheduled_departure] = sched_elems[4].sub(/[^0-9:]+/, "")
+        stations.last[:actual_departure] = sched_elems[5].sub(/[^0-9:]+/, "")
       end
     }
 
-    { "id" => train_id,
-      "name" => train_name,
-      "url" => train_url,
-      "update_time" => update_time,
-      "source" => train_source,
-      "target" => train_target,
-      "stations" => stations }
+    station_objects = stations.map { |s|
+      RealTimeStation.new(s[:name],
+                          s[:code],
+                          s[:scheduled_arrival],
+                          s[:actual_arrival],
+                          s[:scheduled_departure],
+                          s[:actual_departure])
+    }
 
+    RealTimeTrain.new(train_id,
+      train_url,
+      train_name,
+      station_objects,
+      update_time)
   end
 
   def fetch_all_trains(station_code)

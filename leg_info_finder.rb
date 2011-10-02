@@ -22,8 +22,8 @@ class LegInfoFinder
     }.flatten.uniq
     trains_matching_leg = trains_leaving_stations.select {|train_leaving|
       trains_with_measure_station.find { |twms|
-        name_fits = (twms[:train].name == train_leaving["name"])
-        dest_fits = (twms[:train].stations.last.name == train_leaving["target"])
+        name_fits = (twms[:train].name == train_leaving.name)
+        dest_fits = (twms[:train].stations.last.name == train_leaving.stations.last.name)
         name_fits && dest_fits
       } != nil
     }

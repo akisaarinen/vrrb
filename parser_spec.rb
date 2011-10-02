@@ -16,36 +16,36 @@ describe VrParser, "#fetch_train_list" do
     html_loader.stubs(:get_main_page).returns(default_page)
     html_loader.stubs(:post_train_list).returns(read_test_file("station.espoo.with-notes"))
     trains = parser.fetch_train_list("EPO")
-    trains.map { |t| t["name"] }.should == ["U", "S", "S", "U"]
-    trains.map { |t| t["id"] }.should == ["8552", "8561", "8556", "8565"]
-    trains.map { |t| t["target"] }.should == ["Helsinki", "Kirkkonummi", "Helsinki", "Kirkkonummi"]
+    trains.map { |t| t.name }.should == ["U", "S", "S", "U"]
+    trains.map { |t| t.id }.should == ["8552", "8561", "8556", "8565"]
+    trains.map { |t| t.target.name }.should == ["Helsinki", "Kirkkonummi", "Helsinki", "Kirkkonummi"]
   end
 
   it "fetches list of trains in Espoo with empty rows" do 
     html_loader.stubs(:get_main_page).returns(default_page)
     html_loader.stubs(:post_train_list).returns(read_test_file("station.espoo.with-empty-row"))
     trains = parser.fetch_train_list("EPO")
-    trains.map { |t| t["name"] }.should == ["U", "U"]
-    trains.map { |t| t["id"] }.should == ["8587", "8584"]
-    trains.map { |t| t["target"] }.should == ["Kirkkonummi", "Helsinki"]
+    trains.map { |t| t.name }.should == ["U", "U"]
+    trains.map { |t| t.id }.should == ["8587", "8584"]
+    trains.map { |t| t.target.name }.should == ["Kirkkonummi", "Helsinki"]
   end
   
   it "fetches list of trains in Espoo with lots of trains" do 
     html_loader.stubs(:get_main_page).returns(default_page)
     html_loader.stubs(:post_train_list).returns(read_test_file("station.espoo.many-trains"))
     trains = parser.fetch_train_list("EPO")
-    trains.map { |t| t["name"] }.should == ["L", "L", "S", "E", "E", "U", "U", "E", "E", "U"]
-    trains.map { |t| t["id"] }.should == ["8416", "8424", "8465", "8318", "8323", "8464", "8471", "8324", "8325", "8466"]
-    trains.map { |t| t["target"] }.should == ["Helsinki", "Helsinki", "Kirkkonummi", "Helsinki", "Kauklahti", "Helsinki", "Kirkkonummi", "Helsinki", "Kauklahti", "Helsinki"]
+    trains.map { |t| t.name }.should == ["L", "L", "S", "E", "E", "U", "U", "E", "E", "U"]
+    trains.map { |t| t.id }.should == ["8416", "8424", "8465", "8318", "8323", "8464", "8471", "8324", "8325", "8466"]
+    trains.map { |t| t.target.name }.should == ["Helsinki", "Helsinki", "Kirkkonummi", "Helsinki", "Kauklahti", "Helsinki", "Kirkkonummi", "Helsinki", "Kauklahti", "Helsinki"]
   end
  
   it "fetches list of trains in Leppävaara with Y-train" do 
     html_loader.stubs(:get_main_page).returns(default_page)
     html_loader.stubs(:post_train_list).returns(read_test_file("station.leppavaara.with.y-train"))
     trains = parser.fetch_train_list("EPO")
-    trains.map { |t| t["name"] }.should == ["E","Y","A","U","S","E","E","Y","A","S"]
-    trains.map { |t| t["id"] }.should == ["8382", "8553", "8272", "8555", "8546", "8385", "8384", "8550", "8276", "8561"]
-    trains.map { |t| t["target"] }.should == ["Helsinki", "Karjaa", "Helsinki", "Kirkkonummi", "Helsinki", "Kauklahti", "Helsinki", "Helsinki", "Helsinki", "Kirkkonummi"]
+    trains.map { |t| t.name }.should == ["E","Y","A","U","S","E","E","Y","A","S"]
+    trains.map { |t| t.id }.should == ["8382", "8553", "8272", "8555", "8546", "8385", "8384", "8550", "8276", "8561"]
+    trains.map { |t| t.target.name }.should == ["Helsinki", "Karjaa", "Helsinki", "Kirkkonummi", "Helsinki", "Kauklahti", "Helsinki", "Helsinki", "Helsinki", "Kirkkonummi"]
   end
 
   def empty_page
@@ -66,24 +66,24 @@ describe VrParser, "#fetch_single_train" do
     html_loader.stubs(:get_train_info_by_id).returns(read_test_file("train.s.helsinki-kirkkonummi"))
     info = parser.fetch_single_train("anyId")
 
-    info["id"].should == "8551"
-    info["name"].should == "S"
-    info["url"].should == "http://ext-service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8551"
-    info["update_time"].should == "12.12.2010, klo 19:40."
-    info["source"].should == "Helsinki"
-    info["target"].should == "Kirkkonummi"
+    info.id.should == "8551"
+    info.name.should == "S"
+    info.url.should == "http://ext-service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8551"
+    info.update_time.should == "12.12.2010, klo 19:40."
+    info.source.name.should == "Helsinki"
+    info.target.name.should == "Kirkkonummi"
   end
   
   it "parses information for single train from helsinki to karjaa" do
     html_loader.stubs(:get_train_info_by_id).returns(read_test_file("train.y.helsinki-karjaa"))
     info = parser.fetch_single_train("anyId")
 
-    info["id"].should == "8553"
-    info["name"].should == "Y"
-    info["url"].should == "http://ext-service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8553"
-    info["update_time"].should == "14.12.2010, klo 19:45."
-    info["source"].should == "Helsinki"
-    info["target"].should == "Karjaa"
+    info.id.should == "8553"
+    info.name.should == "Y"
+    info.url.should == "http://ext-service.vr.fi/juku/juna.action?lang=fi&junalaji=ll&junanro=8553"
+    info.update_time.should == "14.12.2010, klo 19:45."
+    info.source.name.should == "Helsinki"
+    info.target.name.should == "Karjaa"
   end
 end
 
