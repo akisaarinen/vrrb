@@ -90,14 +90,14 @@ class VrParser
     r = @html_loader.get_main_page(station)
     if m = /action="([^"]+)"/.match(r)
       post_reply = @html_loader.post_train_list(station, m[1])
-      puts "Processing station " + station
+      #puts "Processing station " + station
       doc = Nokogiri::HTML(post_reply)
       departure_table = doc.css('table.kulkutiedot').first
 
       rows = departure_table.css('tr').to_a.delete_if { |tr| tr['class'] == 'table_header' }
 
       rows.map { |row| 
-        puts "Processing " + row.to_s
+        #puts "Processing " + row.to_s
         link = row.css('a.lahi').first
         if link 
           target = row.css('td')[4].content
