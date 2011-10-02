@@ -15,6 +15,17 @@ class RealTimeStation < Station
     @scheduled_departure = scheduled_departure
     @actual_departure = actual_arrival
   end
+
+  def to_json(*a)
+    {
+        :name => @name,
+        :code => @code,
+        :scheduled_arrival => @scheduled_arrival,
+        :actual_arrival => @actual_arrival,
+        :scheduled_departure => @scheduled_departure,
+        :actual_departure => @actual_departure
+    }.to_json(*a)
+  end
 end
 
 class RealTimeTrain < Train
@@ -39,6 +50,16 @@ class RealTimeTrain < Train
       s.actual_departure != nil &&
       s.actual_departure != ""
     } || @stations.first
+  end
+
+  def to_json(*a)
+    {
+        :id => @id,
+        :url => @url,
+        :name => @name,
+        :stations => @stations,
+        :update_time => @update_time
+    }.to_json(a)
   end
 end
 

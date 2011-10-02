@@ -11,6 +11,13 @@ class Station
   def measurable?
     @code != nil
   end
+
+  def to_json(*a)
+    {
+        :name => @name,
+        :code => @code
+    }.to_json(*a)
+  end
 end
 
 class Train
@@ -26,6 +33,13 @@ class Train
 
   def ==(other)
     other != nil && other.name == @name && other.stations == @stations
+  end
+
+  def to_json(*a)
+    {
+        :name => @name,
+        :stations => @stations
+    }.to_json(*a)
   end
 end
 
