@@ -104,6 +104,17 @@ $(document).ready(function() {
         }
     });
 
+    app.view.TrainSearchResultLoading = Backbone.View.extend({
+        tagName: "li",
+        template: _.template($("#train-loading-tmpl").html()),
+        render: function() {
+            $(this.el).html(this.template({
+                name: this.model.get("name"),
+                url: this.model.get("url")
+            }));
+        }
+    });
+
     app.view.TrainSearchResults = Backbone.View.extend({
         initialize: function() {
             _.bindAll(this);
@@ -123,9 +134,15 @@ $(document).ready(function() {
             } else {
                 var results = this.model.get("results");
                 this.$("#realtime-result-count").html(results.size());
+                results.each(this.renderSearchRow);
                 this.$("#loading").hide();
                 this.$("#results").show();
             }
+        },
+        renderSearchRow: function(result) {
+            var view = new app.view.TrainSearchResultLoading({ model: result });
+            view.render();
+            this.$("#train-list").append(view.el);
         }
     });
 
