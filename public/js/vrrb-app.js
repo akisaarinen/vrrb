@@ -75,7 +75,7 @@ $(document).ready(function() {
         render: function() {
             $(this.el).html(this.model.get("name"));
         }
-    })
+    });
     app.view.StationSelect = Backbone.View.extend({
         initialize: function() {
             _.bindAll(this);
@@ -108,7 +108,6 @@ $(document).ready(function() {
             });
         }
     });
-
     app.view.TrainSearchResult = Backbone.View.extend({
         tagName: "li",
         loadingTemplate: _.template($("#train-loading-tmpl").html()),
@@ -159,7 +158,6 @@ $(document).ready(function() {
             }));
         }
     });
-
     app.view.TrainSearchResults = Backbone.View.extend({
         initialize: function() {
             _.bindAll(this);
@@ -198,12 +196,10 @@ $(document).ready(function() {
             this.$("#train-list").append(view.el);
         }
     });
-
     app.view.MainView = Backbone.View.extend({
         el: $("#app"),
         initialize: function() {
             var stations = new app.model.Stations();
-
             var fromSelection = new app.model.StationSelection({
                 stations: stations
             });
@@ -211,7 +207,6 @@ $(document).ready(function() {
                 stations: stations
             });
             var trainSearch = new app.model.TrainSearch();
-
             fromSelection.bind("change:selected", function(selection) {
                 trainSearch.set({
                     from: selection.get("selected").get("name")
@@ -241,7 +236,6 @@ $(document).ready(function() {
                 model: trainSearch
             })
             stations.fetch();
-
         }
     });
 
