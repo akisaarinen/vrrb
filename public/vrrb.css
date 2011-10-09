@@ -103,10 +103,6 @@ div.reload a {
   color: black;
 }
 
-#from, #to {
-    width: 200px;
-}
-
 #from-label, #to-label {
     padding-bottom: 5px;
     margin-top: 10px;
