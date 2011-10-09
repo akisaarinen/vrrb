@@ -26,6 +26,19 @@ $(document).ready(function() {
     app.model.Train = Backbone.Model.extend({
         url: function() {
             return "/api/train/" + this.get("id") + ".json";
+        },
+        stations: function() { return _(this.get("stations")); },
+        startStation: function() { return this.stations().first(); },
+        endStation: function() { return this.stations().last(); },
+        stationByName: function(name) {
+            return this.stations().find(function(s) { return s.name == name });
+        },
+        lastKnownStation: function() {
+            return this.stations()
+                .chain()
+                .reverse()
+                .detect(function(s) { return s.actual_departure != null })
+                .value();
         }
     });
     app.model.TrainSearchResult = Backbone.Model.extend({
@@ -134,15 +147,9 @@ $(document).ready(function() {
         renderFull: function(resultModel) {
             var train = resultModel.get("train");
             var stations = _(train.get("stations"));
-
-            var startStation = stations.first().name;
-            var endStation = stations.last().name;
-            var fromStation = stations.find(function(s) { return s.name == resultModel.get("from") });
-            var toStation = stations.find(function(s) { return s.name == resultModel.get("to") });
-            var lastKnownStation = stations.chain()
-                .reverse()
-                .detect(function(s) { return s.actual_departure != null })
-                .value();
+            var fromStation = train.stationByName(resultModel.get("from"));
+            var toStation = train.stationByName(resultModel.get("to"));
+            var lastKnownStation = train.lastKnownStation();
             var lastKnownInfo = (typeof(lastKnownStation) == "undefined") ?
                 "Ei tietoja" :
                 "Viimeksi " + lastKnownStation.name + " klo " + lastKnownStation.actual_departure;
@@ -150,8 +157,8 @@ $(document).ready(function() {
             $(this.el).html(this.fullTemplate({
                 name: train.get("name"),
                 url: train.get("url"),
-                startStation: startStation,
-                endStation: endStation,
+                startStation: train.startStation().name,
+                endStation: train.endStation().name,
                 schedDeparture: fromStation.scheduled_departure,
                 schedArrival: toStation.scheduled_arrival,
                 lastKnownInfo: lastKnownInfo
