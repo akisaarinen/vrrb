@@ -16,7 +16,7 @@ leg_info_finder = LegInfoFinder.new
 trains = leg_info_finder.trains
 
 get '/' do
-  redirect '/find'
+  redirect '/beta'
 end
 
 get '/api/stations.json' do
@@ -49,6 +49,10 @@ end
 
 get '/view' do
   erb :ajaxview
+end
+
+get '/beta' do
+  redirect '/bb.html'
 end
 
 get '/find' do
