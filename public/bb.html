@@ -31,13 +31,34 @@
     }
 
     #realtime-result-info {
+        float: left;
         font-size: 14px;
+        width: 250px;
     }
 
     #realtime-result-count {
         font-weight: bold;
         font-size: 26px;
         padding-right: 3px;
+    }
+
+
+    #current-time {
+        font-size: 14px;
+        color: #666;
+        width: 250px;
+        height: 30px;
+    }
+
+    #realtime-result-time {
+        float: right;
+        color: #666;
+        font-size: 20px;
+        padding-left: 3px;
+        background-color: #eee;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        padding: 5px;
     }
 
     #loading {
@@ -57,8 +78,9 @@
 
 
     #train-list {
+        clear: both;
         margin: 0;
-        padding: 0;
+        padding: 3px 0;
     }
 
     #train-list li {
@@ -193,6 +215,7 @@
           </div>
 
           <div id="results" style="display:none">
+              <div id="current-time">Päivitetty kello <span id="realtime-result-time"></span></div>
               <div id="realtime-result-info"><span id="realtime-result-count">?</span> junan reaaliaikatiedot saatavilla</div>
               <ul id="train-list">
               </ul>

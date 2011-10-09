@@ -20,6 +20,14 @@ function parseTime(timeStr) {
     return d;
 }
 
+function formatTime(time) {
+    var h = time.getHours();
+    var m = time.getMinutes();
+    var hStr = (h < 10) ? "0" + h : h;
+    var mStr = (m < 10) ? "0" + m : m;
+    return hStr + ":" + mStr;
+}
+
 $(document).ready(function() {
     globalUnderscoreSetup();
 
@@ -234,8 +242,10 @@ $(document).ready(function() {
                 this.$("#results").hide();
                 this.$("#loading").show();
             } else {
+                var now = new Date();
                 var results = this.model.get("results");
                 this.$("#realtime-result-count").html(results.size());
+                this.$("#realtime-result-time").html(formatTime(now));
                 this.$("#train-list").html("");
                 results.each(this.renderSearchRow);
                 this.$("#loading").hide();
