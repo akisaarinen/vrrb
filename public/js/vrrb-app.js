@@ -114,13 +114,17 @@ $(document).ready(function() {
             this.render();
         },
         render: function() {
-            if (this.model.isValidSearch() && !this.model.isSearching) {
-                console.log("isSearching: " + this.model.isSearching);
-                var results = this.model.get("results");
-                $(this.el).show();
-                this.$("#realtime-result-count").html(results.size());
+            if (!this.model.isValidSearch()) {
+                this.$("#loading").hide();
+                this.$("#results").hide();
+            } else if (this.model.isSearching) {
+                this.$("#results").hide();
+                this.$("#loading").show();
             } else {
-                $(this.el).hide();
+                var results = this.model.get("results");
+                this.$("#realtime-result-count").html(results.size());
+                this.$("#loading").hide();
+                this.$("#results").show();
             }
         }
     });

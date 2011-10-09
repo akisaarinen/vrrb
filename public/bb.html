@@ -120,11 +120,6 @@
           </form>
       </div>
 
-      <div id="loading" style="display:none">
-          <img src="ajax-loader.gif">
-          Haetaan...
-      </div>
-
       <div id="select-from-first" class="info-box" style="display:none">
           <img src="info.png" class="info-icon">
           Aloita valitsemalla lähtöasema.
@@ -136,11 +131,19 @@
           Valitse vielä kohdeasema.
       </div>
 
-      <div id="search-results" style="display:none">
-          <div><span id="realtime-result-count">?</span> junan reaaliaikatiedot saatavilla</div>
-          <ul id="train-list">
-          </ul>
-          <div class="jsonContent" style="display:none"/>
+
+      <div id="search-results">
+          <div id="loading" style="display:none">
+              <img src="ajax-loader.gif">
+              Haetaan...
+          </div>
+
+          <div id="results" style="display:none">
+              <div><span id="realtime-result-count">?</span> junan reaaliaikatiedot saatavilla</div>
+              <ul id="train-list">
+              </ul>
+              <div class="jsonContent" style="display:none"/>
+          </div>
       </div>
   </div>
 
