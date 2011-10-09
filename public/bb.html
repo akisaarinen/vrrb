@@ -32,7 +32,8 @@
 
     #realtime-result-info {
         float: left;
-        font-size: 14px;
+        font-size: 18px;
+        color: #666;
         width: 250px;
     }
 
@@ -44,7 +45,7 @@
 
 
     #current-time {
-        font-size: 14px;
+        font-size: 20px;
         color: #666;
         width: 250px;
         height: 30px;
@@ -88,7 +89,7 @@
         padding: 0;
         margin: 15px 0;
         list-style-type: none;
-        height: 65px;
+        height: 75px;
         border: 1px solid #aaa;
         border-radius: 10px;
         -moz-border-radius: 10px;
@@ -127,6 +128,7 @@
 
       #train-list .sched-time {
           padding: 3px 10px;
+          font-size: 20px;
       }
 
       #train-list .last-known-station {
@@ -135,6 +137,7 @@
           font-style: italic;
           font-size: 13px;
           padding-left: 10px;
+          padding-bottom: 5px;
       }
 
       #train-list .late-info {
@@ -144,13 +147,16 @@
           padding-left: 5px;
       }
 
-      #train-list .gone-already {
+      #train-list .late-mins {
+          font-size: 18px;
+      }
+
+      #train-list li.gone-already {
           background-color: #ddd;
           color: #777;
       }
 
-      #train-list .late-info.gone-already {
-          background-color: #ddd;
+      #train-list li.gone-already .late-info {
           color: #cd5c5c;
       }
       #app {
@@ -180,7 +186,7 @@
           <div class="route">{{ startStation }} - {{ endStation }}</div>
           <div class="sched-time">Aikataulu: {{ schedDeparture }}, perillä {{ schedArrival }}</div>
           <div class="last-known-station">{{ lastKnownInfo }}</div>
-          <div class="late-info">My&ouml;h&auml;ss&auml; {{ lateInfo }} min</div>
+          <div class="late-info">My&ouml;h&auml;ss&auml; <span class="late-mins">{{ lateInfo }} min</span></div>
       </div>
   </div>
 
@@ -216,7 +222,7 @@
 
           <div id="results" style="display:none">
               <div id="current-time">Päivitetty kello <span id="realtime-result-time"></span></div>
-              <div id="realtime-result-info"><span id="realtime-result-count">?</span> junan reaaliaikatiedot saatavilla</div>
+              <div id="realtime-result-info"><span id="realtime-result-count">?</span> junan tiedot saatavilla</div>
               <ul id="train-list">
               </ul>
               <div class="jsonContent" style="display:none"/>
