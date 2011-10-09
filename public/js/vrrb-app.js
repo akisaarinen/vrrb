@@ -31,9 +31,12 @@ $(document).ready(function() {
 
     app.view.StationSelect = Backbone.View.extend({
         initialize: function() {
-            _.bindAll(this, "stationsReset", "stationAdded", "renderSingleStation");
+            _.bindAll(this);
             this.model.bind("add", this.stationAdded);
             this.model.bind("reset", this.stationsReset);
+        },
+        events: {
+            "change": "onChange"
         },
         stationsReset: function(s) {
             s.each(this.renderSingleStation);
@@ -47,23 +50,29 @@ $(document).ready(function() {
             var view = new app.view.StationOption({model: s});
             view.render();
             $(this.el).append(view.el);
+        },
+        onChange: function() {
+            console.log("Change in selection");
         }
     });
 
-    var stations = new app.model.Stations();
-
-    var fromSelect = new app.view.StationSelect({
-        el: $("#from"),
-        model: stations
+    app.view.MainView = Backbone.View.extend({
+        el: $("#app"),
+        initialize: function() {
+            var stations = new app.model.Stations();
+            var fromSelect = new app.view.StationSelect({
+                el: $("#from"),
+                model: stations
+            });
+            var toSelect = new app.view.StationSelect({
+                el: $("#to"),
+                model: stations
+            });
+            stations.fetch();
+        }
     });
 
-    var toSelect = new app.view.StationSelect({
-        el: $("#to"),
-        model: stations
-    });
-
-
+    var mainView = new app.view.MainView();
     $(".chzn-select").chosen();
-    stations.fetch();
-    $("#search").show();
+    $("#app").show();
 });
