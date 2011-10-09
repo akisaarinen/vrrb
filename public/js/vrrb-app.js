@@ -191,7 +191,6 @@ $(document).ready(function() {
                 "Ei tietoja" :
                 "Viimeksi " + lastKnownStation.name + " klo " + lastKnownStation.actual_departure;
             var lateMinutes = train.lateMinutes();
-
             $(this.el).html(this.fullTemplate({
                 name: train.get("name"),
                 url: train.get("url"),
@@ -207,6 +206,14 @@ $(document).ready(function() {
                 this.$(".late-info").hide();
             } else {
                 this.$(".late-info").show();
+            }
+
+            var now = new Date();
+            var scheduledDeparture = parseTime(fromStation.scheduled_departure);
+            var estimatedDeparture = new Date(scheduledDeparture.getTime() + lateMinutes * 60000);
+
+            if (estimatedDeparture.getTime() <= now) {
+                $(this.el).addClass("gone-already");
             }
         }
     });
