@@ -122,3 +122,110 @@ trains:
     - Louhela
     - Martinlaakso
     - VKS
+  - name: I
+    stations:
+    - HKI
+    - Pasila
+    - Käpylä
+    - OLK
+    - Pukinmäki
+    - Malmi
+    - Tapanila
+    - Puistola
+    - TKL
+  - name: K
+    stations:
+    - HKI
+    - Pasila
+    - OLK
+    - Malmi
+    - Puistola
+    - TKL
+    - Hiekkaharju
+    - Koivukylä
+    - Rekola
+    - Korso
+    - Savio
+    - KE
+  - name: N
+    stations:
+    - HKI
+    - Pasila
+    - Käpylä
+    - OLK
+    - Pukinmäki
+    - Malmi
+    - Tapanila
+    - Puistola
+    - TKL
+    - Hiekkaharju
+    - Koivukylä
+    - Rekola
+    - Korso
+    - Savio
+    - KE
+  - name: G
+    stations:
+    - HKI
+    - Pasila
+    - Kyrölä
+    - Järvenpää
+    - SAU
+  - name: T
+    stations:
+    - HKI
+    - Pasila
+    - Käpylä
+    - OLK
+    - Pukinmäki
+    - Malmi
+    - Tapanila
+    - Puistola
+    - TKL
+    - Hiekkaharju
+    - Koivukylä
+    - Rekola
+    - Korso
+    - Savio
+    - KE
+    - Kyrölä
+    - Järvenpää
+    - SAU
+    - Purola
+    - Nuppulinna
+    - Jokela
+    - Hyvinkää
+    - RI
+  - name: H
+    stations:
+    - HKI
+    - Pasila
+    - TKL
+    - KE
+    - Kyrölä
+    - Järvenpää
+    - SAU
+    - Purola
+    - Nuppulinna
+    - Jokela
+    - Hyvinkää
+    - RI
+  - name: R
+    stations:
+    - HKI
+    - Pasila
+    - TKL
+    - KE
+    - Järvenpää
+    - Jokela
+    - Hyvinkää
+    - RI
+  - name: Z
+    stations:
+    - HKI
+    - Pasila
+    - TKL
+    - KE
+    - Haarajoki
+    - MLÄ
+    - LH
