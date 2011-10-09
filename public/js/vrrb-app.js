@@ -7,9 +7,9 @@ function globalUnderscoreSetup() {
 function parseTime(timeStr) {
     var d = new Date();
     var isBeforeMidnight = d.getHours() >= 18;
-    var time = timeStr.match(/(\d+)+:(\d+)+/);
-    d.setHours(parseInt(time[1]));
-    d.setMinutes(parseInt(time[2]));
+    var time = timeStr.match(/(0?)(\d)+:(0?)(\d)+/);
+    d.setHours(parseInt(time[2]));
+    d.setMinutes(parseInt(time[4]));
     d.setSeconds(0);
     d.setMilliseconds(0);
     // Move to next day in case we're right before midnight and time is over midnight
@@ -81,9 +81,10 @@ $(document).ready(function() {
                 var scheduled = parseTime(lastStation.scheduled_departure);
                 var actual = parseTime(lastStation.actual_departure);
                 var diffInMs = actual.getTime() - scheduled.getTime();
+                console.log(diffInMs);
                 return diffInMs / 1000 / 60;
             } else {
-                return 0;
+                return 1020;
             }
         }
     });
