@@ -4,6 +4,22 @@ function globalUnderscoreSetup() {
     };
 }
 
+function parseTime(timeStr) {
+    var d = new Date();
+    var isBeforeMidnight = d.getHours() >= 18;
+    var time = timeStr.match(/(\d+)+:(\d+)+/);
+    d.setHours(parseInt(time[1]));
+    d.setMinutes(parseInt(time[2]));
+    d.setSeconds(0);
+    d.setMilliseconds(0);
+    // Move to next day in case we're right before midnight and time is over midnight
+    if (isBeforeMidnight && d.getHours() <= 6) {
+        var msecsInADay = 86400000;
+        d = new Date(d.getTime() + msecsInADay);
+    }
+    return d;
+}
+
 $(document).ready(function() {
     globalUnderscoreSetup();
 
@@ -24,21 +40,43 @@ $(document).ready(function() {
         }
     });
     app.model.Train = Backbone.Model.extend({
+        initialize: function() {
+            _.bindAll(this);
+            this.bind("change", this.onLoaded);
+        },
+        onLoaded: function(x) {
+            console.log(JSON.stringify(this));
+        },
         url: function() {
             return "/api/train/" + this.get("id") + ".json";
         },
-        stations: function() { return _(this.get("stations")); },
-        startStation: function() { return this.stations().first(); },
-        endStation: function() { return this.stations().last(); },
+        startStation: function() {
+            return _(this.get("stations")).first();
+        },
+        endStation: function() {
+            return _(this.get("stations")).last();
+        },
         stationByName: function(name) {
-            return this.stations().find(function(s) { return s.name == name });
+            return _(this.get("stations")).find(function(s) { return s.name == name });
         },
         lastKnownStation: function() {
-            return this.stations()
+            return _(this.get("stations"))
                 .chain()
+                .clone() // required because reverse does not copy
                 .reverse()
-                .detect(function(s) { return s.actual_departure != null })
+                .find(function(s) { return s.actual_departure != null })
                 .value();
+        },
+        lateMinutes: function() {
+            var lastStation = this.lastKnownStation();
+            if (typeof(lastStation) != "undefined") {
+                var scheduled = parseTime(lastStation.scheduled_departure);
+                var actual = parseTime(lastStation.actual_departure);
+                var diffInMs = actual.getTime() - scheduled.getTime();
+                return diffInMs / 1000 / 60;
+            } else {
+                return 0;
+            }
         }
     });
     app.model.TrainSearchResult = Backbone.Model.extend({
@@ -146,13 +184,13 @@ $(document).ready(function() {
         },
         renderFull: function(resultModel) {
             var train = resultModel.get("train");
-            var stations = _(train.get("stations"));
             var fromStation = train.stationByName(resultModel.get("from"));
             var toStation = train.stationByName(resultModel.get("to"));
             var lastKnownStation = train.lastKnownStation();
             var lastKnownInfo = (typeof(lastKnownStation) == "undefined") ?
                 "Ei tietoja" :
                 "Viimeksi " + lastKnownStation.name + " klo " + lastKnownStation.actual_departure;
+            var lateMinutes = train.lateMinutes();
 
             $(this.el).html(this.fullTemplate({
                 name: train.get("name"),
@@ -161,8 +199,15 @@ $(document).ready(function() {
                 endStation: train.endStation().name,
                 schedDeparture: fromStation.scheduled_departure,
                 schedArrival: toStation.scheduled_arrival,
-                lastKnownInfo: lastKnownInfo
+                lastKnownInfo: lastKnownInfo,
+                lateInfo: lateMinutes
             }));
+
+            if (lateMinutes == 0) {
+                this.$(".late-info").hide();
+            } else {
+                this.$(".late-info").show();
+            }
         }
     });
     app.view.TrainSearchResults = Backbone.View.extend({
@@ -249,4 +294,5 @@ $(document).ready(function() {
     var mainView = new app.view.MainView();
     $(".chzn-select").chosen();
     $("#app").show();
+    $("#from_chzn").focus();
 });
