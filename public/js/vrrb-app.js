@@ -7,7 +7,7 @@ function globalUnderscoreSetup() {
 function parseTime(timeStr) {
     var d = new Date();
     var isBeforeMidnight = d.getHours() >= 18;
-    var time = timeStr.match(/(0?)(\d)+:(0?)(\d)+/);
+    var time = timeStr.match(/(0?)(\d+):(0?)(\d+)/);
     d.setHours(parseInt(time[2]));
     d.setMinutes(parseInt(time[4]));
     d.setSeconds(0);
@@ -81,7 +81,6 @@ $(document).ready(function() {
                 var scheduled = parseTime(lastStation.scheduled_departure);
                 var actual = parseTime(lastStation.actual_departure);
                 var diffInMs = actual.getTime() - scheduled.getTime();
-                console.log(diffInMs);
                 return diffInMs / 1000 / 60;
             } else {
                 return 1020;
@@ -220,8 +219,7 @@ $(document).ready(function() {
             var now = new Date();
             var scheduledDeparture = parseTime(fromStation.scheduled_departure);
             var estimatedDeparture = new Date(scheduledDeparture.getTime() + lateMinutes * 60000);
-
-            if (estimatedDeparture.getTime() <= now) {
+            if (estimatedDeparture.getTime() <= now.getTime()) {
                 $(this.el).addClass("gone-already");
             }
         }
