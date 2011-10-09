@@ -7,6 +7,13 @@
       font-family: Helvetica, Arial;
       font-size: 12px;
     }
+    #site-info, #service-info {
+        color: #888;
+        margin: 10px;
+    }
+    #site-info {
+        font-size: 10px;
+    }
     a {
       font-weight: normal;
       color: #888;
@@ -170,9 +177,17 @@
       </div>
   </div>
 
-
-  <div class="service-info">
+  <div id="service-info">
     <a href="http://ext-service.vr.fi/juku/haku.action?lang=fi&junalaji=ll">Suorat haut VR:lt&auml</a>
+  </div>
+
+  <div id="site-info">
+      Powered by
+      <a href="http://www.sinatrarb.com/">Sinatra</a>,
+      <a href="http://documentcloud.github.com/backbone">backbone.js</a>,
+      <a href="http://documentcloud.github.com/underscore/">underscore.js</a>,
+      <a href="http://harvesthq.github.com/chosen/">Chosen</a> and
+      <a href="http://jquery.com/">jQuery</a>.
   </div>
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
