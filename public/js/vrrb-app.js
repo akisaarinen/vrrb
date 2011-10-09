@@ -1,12 +1,8 @@
-//Backbone.sync = function(method, model) {
-//  alert(method + ": " + model.url);
-//};
 function globalUnderscoreSetup() {
     _.templateSettings = {
       interpolate : /\{\{(.+?)\}\}/g
     };
 }
-
 
 $(document).ready(function() {
     globalUnderscoreSetup();
@@ -27,8 +23,17 @@ $(document).ready(function() {
             selected: undefined
         }
     })
-
+    app.model.Train = Backbone.Model.extend({
+        url: function() {
+            return "/api/train/" + this.get("id") + ".json";
+        }
+    });
     app.model.TrainSearchResult = Backbone.Model.extend({
+        defaults: {
+            from: null,
+            to: null,
+            train: null
+        }
     });
     app.model.TrainSearchResults = Backbone.Collection.extend({
         model: app.model.TrainSearchResult
@@ -104,13 +109,53 @@ $(document).ready(function() {
         }
     });
 
-    app.view.TrainSearchResultLoading = Backbone.View.extend({
+    app.view.TrainSearchResult = Backbone.View.extend({
         tagName: "li",
-        template: _.template($("#train-loading-tmpl").html()),
+        loadingTemplate: _.template($("#train-loading-tmpl").html()),
+        fullTemplate: _.template($("#train-tmpl").html()),
+        initialize: function() {
+            _.bindAll(this);
+            this.model.get("train").bind("change", this.render);
+        },
         render: function() {
-            $(this.el).html(this.template({
-                name: this.model.get("name"),
-                url: this.model.get("url")
+            if (this.model.get("train").get("full_info") == false) {
+                this.renderLoading(this.model);
+            } else {
+                this.renderFull(this.model);
+            }
+        },
+        renderLoading: function(resultModel) {
+            var train = resultModel.get("train");
+            $(this.el).html(this.loadingTemplate({
+                name: train.get("name"),
+                url: train.get("url")
+            }));
+            train.fetch();
+        },
+        renderFull: function(resultModel) {
+            var train = resultModel.get("train");
+            var stations = _(train.get("stations"));
+
+            var startStation = stations.first().name;
+            var endStation = stations.last().name;
+            var fromStation = stations.find(function(s) { return s.name == resultModel.get("from") });
+            var toStation = stations.find(function(s) { return s.name == resultModel.get("to") });
+            var lastKnownStation = stations.chain()
+                .reverse()
+                .detect(function(s) { return s.actual_departure != null })
+                .value();
+            var lastKnownInfo = (typeof(lastKnownStation) == "undefined") ?
+                "Ei tietoja" :
+                "Viimeksi " + lastKnownStation.name + " klo " + lastKnownStation.actual_departure;
+
+            $(this.el).html(this.fullTemplate({
+                name: train.get("name"),
+                url: train.get("url"),
+                startStation: startStation,
+                endStation: endStation,
+                schedDeparture: fromStation.scheduled_departure,
+                schedArrival: toStation.scheduled_arrival,
+                lastKnownInfo: lastKnownInfo
             }));
         }
     });
@@ -134,13 +179,21 @@ $(document).ready(function() {
             } else {
                 var results = this.model.get("results");
                 this.$("#realtime-result-count").html(results.size());
+                this.$("#train-list").html("");
                 results.each(this.renderSearchRow);
                 this.$("#loading").hide();
                 this.$("#results").show();
             }
         },
-        renderSearchRow: function(result) {
-            var view = new app.view.TrainSearchResultLoading({ model: result });
+        renderSearchRow: function(train) {
+            var resultModel = new app.model.TrainSearchResult({
+                from: this.model.get("from"),
+                to: this.model.get("to"),
+                train: new app.model.Train(train)
+            });
+            var view = new app.view.TrainSearchResult({
+                model: resultModel
+            });
             view.render();
             this.$("#train-list").append(view.el);
         }

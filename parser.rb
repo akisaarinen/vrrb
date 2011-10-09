@@ -38,11 +38,12 @@ end
 
 class RealTimeTrain < Train
   attr_reader :id, :url, :update_time
-  def initialize(id, url, name, stations, update_time)
+  def initialize(id, url, name, stations, update_time, full_info)
     super(name, stations)
     @id = id
     @url = url
     @update_time = update_time
+    @full_info = full_info
   end
 
   def source
@@ -66,7 +67,8 @@ class RealTimeTrain < Train
         :url => @url,
         :name => @name,
         :stations => @stations,
-        :update_time => @update_time
+        :update_time => @update_time,
+        :full_info => @full_info
     }.to_json(a)
   end
 
@@ -108,7 +110,8 @@ class VrParser
             train_url,
             train_name,
             [Station.new(target, nil)],
-            nil)
+            nil,
+            false)
         else
           nil
         end
@@ -173,7 +176,8 @@ class VrParser
       train_url,
       train_name,
       station_objects,
-      update_time)
+      update_time,
+      true)
   end
 
   def fetch_all_trains(station_code)

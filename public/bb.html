@@ -113,6 +113,15 @@
           </div>
           <div class="loading-details"><img src="ajax-loader.gif"> Haetaan lis&auml;tietoja</div>
       </div>
+
+      <div id="train-tmpl">
+          <div class="name-wrapper">
+              <a href="{{ url }}"><div class="name">{{ name }}</div></a>
+          </div>
+          <div class="route">{{ startStation }} - {{ endStation }}</div>
+          <div class="sched-time">Aikataulu: {{ schedDeparture }}, perillä {{ schedArrival }}</div>
+          <div class="last-known-station">{{ lastKnownInfo }}</div>
+      </div>
   </div>
 
   <div id="app" style="display:none">
