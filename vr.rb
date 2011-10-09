@@ -26,7 +26,13 @@ end
 
 get '/api/station/:station.json' do
   headers 'Content-Type' => "application/json; charset=utf-8"
-  vr_parser.fetch_train_list(params[:station]).to_json
+
+  station = trains.find_station_by_code(params[:station])
+  trains_from_station = vr_parser.fetch_train_list(station.code)
+
+  { :code => station.code,
+    :name => station.name,
+    :trains => trains_from_station }.to_json
 end
 
 get '/api/train/:id.json' do

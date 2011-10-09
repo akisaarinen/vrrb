@@ -89,6 +89,10 @@ class Trains
     @all_known_stations.find {|s| s.name == name }
   end
 
+  def find_station_by_code(code)
+    @all_known_stations.find {|s| s.code == code }
+  end
+
   def self.load_trains
     routes = YAML.load_file("routes.yml")
 
