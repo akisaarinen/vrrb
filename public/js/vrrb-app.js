@@ -117,7 +117,7 @@ $(document).ready(function() {
             this.model.get("train").bind("change", this.render);
         },
         render: function() {
-            if (this.model.get("train").get("full_info") == false) {
+            if (!this.model.get("train").get("full_info")) {
                 this.renderLoading(this.model);
             } else {
                 this.renderFull(this.model);
