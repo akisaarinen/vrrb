@@ -103,10 +103,6 @@ div.reload a {
   color: black;
 }
 
-#search {
-    padding-left: 5px;
-}
-
 #from, #to {
     width: 200px;
 }
