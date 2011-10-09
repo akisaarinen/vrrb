@@ -22,7 +22,7 @@ $(document).ready(function() {
         defaults: {
             selected: undefined
         }
-    })
+    });
     app.model.Train = Backbone.Model.extend({
         url: function() {
             return "/api/train/" + this.get("id") + ".json";
@@ -241,7 +241,7 @@ $(document).ready(function() {
             new app.view.TrainSearchResults({
                 el: $("#search-results"),
                 model: trainSearch
-            })
+            });
             stations.fetch();
         }
     });
